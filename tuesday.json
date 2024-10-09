@@ -1,0 +1,24 @@
+[
+    {
+      "time": "10:45am - 11:45am",
+      "subject": "EVS",
+      "room": "305",
+      "teacher": "Dr. Rahul M"
+    },
+    {
+      "time": "11:45am - 12:45pm",
+      "subject": "Data Structure",
+      "room": "305",
+      "teacher": "Mrs. Sharayu Mirasdar"
+    },
+    {
+      "time": "12:45pm - 1:35pm",
+      "subject": "Lunch Break"
+    },
+    {
+      "time": "1:35pm - 03:35pm",
+      "subject": "Java Practical",
+      "room": "PrL",
+      "teacher": "Dr. Rupali Chopade"
+    }
+  ]

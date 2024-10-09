@@ -1,0 +1,24 @@
+[
+    {
+      "time": "09:30am - 11:45am",
+      "subject": "Java",
+      "room": "IOTL",
+      "teacher": "Dr. Rupali Chopade"
+    },
+    {
+      "time": "11:45am - 12:45pm",
+      "subject": "Finance and costing ",
+      "room": "107",
+      "teacher": "Mrs. Surekha Jhoshi"
+    },
+    {
+      "time": "12:45pm - 01:35pm",
+      "subject": "Lunch Break"
+    },
+    {
+      "time": "01:35pm - 03:35pm",
+      "subject": "Film",
+      "room": "513",
+      "teacher": "Dr. P Namjoshi"
+    }
+  ]
