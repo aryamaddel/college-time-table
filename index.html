@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Timetable</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+        background-color: #f0f0f0;
+      }
+      h1 {
+        text-align: center;
+        color: #333;
+      }
+      #current-lecture {
+        background-color: #fff;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+      }
+      #current-lecture h2 {
+        margin-top: 0;
+        color: #2c3e50;
+      }
+      #current-lecture p {
+        margin: 10px 0;
+        color: #34495e;
+      }
+      #full-timetable {
+        background-color: #fff;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      #full-timetable h3 {
+        margin-top: 0;
+        color: #2c3e50;
+      }
+      .lecture {
+        margin-bottom: 15px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid #eee;
+      }
+      .lecture:last-child {
+        border-bottom: none;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Timetable</h1>
+    <div id="current-lecture"></div>
+    <div id="full-timetable"></div>
+
+    <script>
+      const timetable = {
+        Monday: [
+          {
+            time: "08:30am - 10:30am",
+            subject: "DELD - Practical",
+            room: "308",
+            teacher: "Dr. Vaishali Kamble",
+          },
+          {
+            time: "10:45am - 11:45am",
+            subject: "EVS",
+            room: "304",
+            teacher: "Dr. Rahul M",
+          },
+          {
+            time: "11:45am - 12:45pm",
+            subject: "DELD",
+            room: "304",
+            teacher: "Dr. Vaishali Kamble",
+          },
+        ],
+        Tuesday: [
+          {
+            time: "10:45am - 11:45am",
+            subject: "EVS",
+            room: "305",
+            teacher: "Dr. Rahul M",
+          },
+          {
+            time: "11:45am - 12:45pm",
+            subject: "Data Structure",
+            room: "305",
+            teacher: "Mrs. Sharayu Mirasdar",
+          },
+          { time: "12:45pm - 1:35pm", subject: "Lunch Break" },
+          {
+            time: "1:35pm - 03:35pm",
+            subject: "Java Practical",
+            room: "PrL",
+            teacher: "Dr. Rupali Chopade",
+          },
+        ],
+        Wednesday: [
+          {
+            time: "09:30am - 11:45am",
+            subject: "DSV",
+            room: "301",
+            teacher: "Prachi Jhoshi",
+          },
+          {
+            time: "11:45am - 12:45pm",
+            subject: "Java",
+            room: "108",
+            teacher: "Dr.Prajakta Khadikar",
+          },
+          {
+            time: "12:45pm - 01:35pm",
+            subject: "Lunch Break",
+          },
+          {
+            time: "01:35pm - 02:35pm",
+            subject: "DLED",
+            room: "108",
+            teacher: "Dr. Vaishali Kamble",
+          },
+          {
+            time: "02:35pm - 03:35pm",
+            subject: "DS",
+            room: "PrL New",
+            teacher: "",
+          },
+          {
+            time: "04:35pm - 05:35pm",
+            subject: "EGG Economics",
+            room: "305",
+            teacher: "Mrs Shilpa Soman",
+          },
+        ],
+        Thursday: [
+          {
+            time: "09:30am - 11:45am",
+            subject: "Java",
+            room: "IOTL",
+            teacher: "Dr. Rupali Chopade",
+          },
+          {
+            time: "11:45am - 12:45am",
+            subject: "Finance and costing ",
+            room: "107",
+            teacher: "Mrs. Surekha Jhoshi",
+          },
+          {
+            time: "12:45pm - 01:35pm",
+            subject: "Lunch Break",
+            room: "",
+            teacher: "",
+          },
+          {
+            time: "01:35pm - 03:35pm",
+            subject: "Film",
+            room: "513",
+            teacher: "Dr. P Namjoshi",
+          },
+        ],
+        Friday: [
+          {
+            time: "08:30am - 09:30am",
+            subject: "DSV",
+            room: "303",
+            teacher: "Dr. Prachi M Joshi",
+          },
+          {
+            time: "09:30am - 10:30am",
+            subject: "DS-I",
+            room: "303",
+            teacher: "Mrs. Sharayu Mirasdar",
+          },
+          {
+            time: "10:45am - 11:45am",
+            subject: "Finance and costing",
+            room: "303",
+            teacher: "Mrs. Surekha Jhoshi",
+          },
+          {
+            time: "11:45am - 12:45pm",
+            subject: "Engg Economics",
+            room: "303",
+            teacher: "Mrs.Shilpa Soman",
+          },
+        ],
+      };
+
+      function getCurrentLecture() {
+        const now = new Date();
+        const day = [
+          "Sunday",
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+        ][now.getDay()];
+        const time = now.toLocaleTimeString("en-US", {
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: true,
+        });
+
+        if (timetable[day]) {
+          for (const lecture of timetable[day]) {
+            const [start, end] = lecture.time.split(" - ");
+            if (time >= start && time <= end) {
+              return lecture;
+            }
+          }
+        }
+        return null;
+      }
+
+      function displayCurrentLecture() {
+        const currentLectureElement =
+          document.getElementById("current-lecture");
+        const lecture = getCurrentLecture();
+
+        if (lecture) {
+          currentLectureElement.innerHTML = `
+                    <h2>Current Lecture</h2>
+                    <p><strong>Subject:</strong> ${lecture.subject}</p>
+                    <p><strong>Time:</strong> ${lecture.time}</p>
+                    <p><strong>Room:</strong> ${lecture.room}</p>
+                    <p><strong>Teacher:</strong> ${lecture.teacher}</p>
+                `;
+        } else {
+          currentLectureElement.innerHTML = "<h2>No Current Lecture</h2>";
+        }
+      }
+
+      function displayFullTimetable() {
+        const fullTimetableElement = document.getElementById("full-timetable");
+        const now = new Date();
+        const currentDay = [
+          "Sunday",
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+        ][now.getDay()+1];
+
+        let html = `<h3>Tomorrows Timetable (${currentDay})</h3>`;
+
+        if (timetable[currentDay]) {
+          timetable[currentDay].forEach((lecture) => {
+            html += `
+                        <div class="lecture">
+                            <p><strong>${lecture.subject}</strong></p>
+                            <p>Time: ${lecture.time}</p>
+                            <p>Room: ${lecture.room}</p>
+                            <p>Teacher: ${lecture.teacher}</p>
+                        </div>
+                    `;
+          });
+        } else {
+          html += "<p>No classes scheduled for today.</p>";
+        }
+
+        fullTimetableElement.innerHTML = html;
+      }
+
+      displayCurrentLecture();
+      displayFullTimetable();
+      setInterval(displayCurrentLecture, 60000); // Update every minute
+    </script>
+  </body>
+</html>
