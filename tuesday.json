@@ -14,11 +14,6 @@
     "teacher": "Mrs. Sharayu Mirasdar"
   },
   {
-    "starttime": "12:45",
-    "endtime": "13:35",
-    "subject": "Lunch Break"
-  },
-  {
     "starttime": "13:35",
     "endtime": "15:35",
     "subject": "Java Practical",
