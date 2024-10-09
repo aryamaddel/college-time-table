@@ -101,3 +101,19 @@ h1 {
   background-color: #3498db;
   transition: width 0.5s ease-in-out;
 }
+/* Footer section */
+footer {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 14px;
+  color: #2c3e50;
+}
+
+footer a {
+  color: #3498db;
+  text-decoration: none;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
