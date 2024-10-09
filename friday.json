@@ -1,26 +1,26 @@
 [
-    {
-      "time": "08:30am - 09:30am",
-      "subject": "DSV",
-      "room": "303",
-      "teacher": "Dr. Prachi M Joshi"
-    },
-    {
-      "time": "09:30am - 10:30am",
-      "subject": "DS-I",
-      "room": "303",
-      "teacher": "Mrs. Sharayu Mirasdar"
-    },
-    {
-      "time": "10:45am - 11:45am",
-      "subject": "Finance and costing",
-      "room": "303",
-      "teacher": "Mrs. Surekha Jhoshi"
-    },
-    {
-      "time": "11:45am - 12:45pm",
-      "subject": "Engg Economics",
-      "room": "303",
-      "teacher": "Mrs.Shilpa Soman"
-    }
-  ]
+  {
+    "time": "08:30am - 09:30am",
+    "subject": "DSV",
+    "room": "303",
+    "teacher": "Dr. Prachi M Joshi"
+  },
+  {
+    "time": "09:30am - 10:30am",
+    "subject": "DS-I",
+    "room": "303",
+    "teacher": "Mrs. Sharayu Mirasdar"
+  },
+  {
+    "time": "10:45am - 11:45am",
+    "subject": "Finance and costing",
+    "room": "303",
+    "teacher": "Mrs. Surekha Jhoshi"
+  },
+  {
+    "time": "11:45am - 12:45pm",
+    "subject": "Engg Economics",
+    "room": "303",
+    "teacher": "Mrs.Shilpa Soman"
+  }
+]

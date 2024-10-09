@@ -1,20 +1,20 @@
 [
-    {
-      "time": "08:30am - 10:30am",
-      "subject": "DELD - Practical",
-      "room": "308",
-      "teacher": "Dr. Vaishali Kamble"
-    },
-    {
-      "time": "10:45am - 11:45am",
-      "subject": "EVS",
-      "room": "304",
-      "teacher": "Dr. Rahul M"
-    },
-    {
-      "time": "11:45am - 12:45pm",
-      "subject": "DELD",
-      "room": "304",
-      "teacher": "Dr. Vaishali Kamble"
-    }
-  ]
+  {
+    "time": "08:30am - 10:30am",
+    "subject": "DELD - Practical",
+    "room": "308",
+    "teacher": "Dr. Vaishali Kamble"
+  },
+  {
+    "time": "10:45am - 11:45am",
+    "subject": "EVS",
+    "room": "304",
+    "teacher": "Dr. Rahul M"
+  },
+  {
+    "time": "11:45am - 12:45pm",
+    "subject": "DELD",
+    "room": "304",
+    "teacher": "Dr. Vaishali Kamble"
+  }
+]

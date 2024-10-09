@@ -1,36 +1,36 @@
 [
-    {
-      "time": "09:30am - 11:45am",
-      "subject": "DSV",
-      "room": "301",
-      "teacher": "Prachi Jhoshi"
-    },
-    {
-      "time": "11:45am - 12:45pm",
-      "subject": "Java",
-      "room": "108",
-      "teacher": "Dr.Prajakta Khadikar"
-    },
-    {
-      "time": "12:45pm - 01:35pm",
-      "subject": "Lunch Break"
-    },
-    {
-      "time": "01:35pm - 02:35pm",
-      "subject": "DLED",
-      "room": "108",
-      "teacher": "Dr. Vaishali Kamble"
-    },
-    {
-      "time": "02:35pm - 03:35pm",
-      "subject": "DS",
-      "room": "PrL New",
-      "teacher": ""
-    },
-    {
-      "time": "04:35pm - 05:35pm",
-      "subject": "EGG Economics",
-      "room": "305",
-      "teacher": "Mrs Shilpa Soman"
-    }
-  ]
+  {
+    "time": "09:30am - 11:45am",
+    "subject": "DSV",
+    "room": "301",
+    "teacher": "Prachi Jhoshi"
+  },
+  {
+    "time": "11:45am - 12:45pm",
+    "subject": "Java",
+    "room": "108",
+    "teacher": "Dr.Prajakta Khadikar"
+  },
+  {
+    "time": "12:45pm - 01:35pm",
+    "subject": "Lunch Break"
+  },
+  {
+    "time": "01:35pm - 02:35pm",
+    "subject": "DLED",
+    "room": "108",
+    "teacher": "Dr. Vaishali Kamble"
+  },
+  {
+    "time": "02:35pm - 03:35pm",
+    "subject": "DS",
+    "room": "PrL New",
+    "teacher": ""
+  },
+  {
+    "time": "04:35pm - 05:35pm",
+    "subject": "EGG Economics",
+    "room": "305",
+    "teacher": "Mrs Shilpa Soman"
+  }
+]

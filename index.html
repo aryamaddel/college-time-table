@@ -59,7 +59,7 @@
       let timetable = {};
 
       async function loadTimetable() {
-        const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'];
+        const days = ["monday", "tuesday", "wednesday", "thursday", "friday"];
         for (const day of days) {
           const response = await fetch(`${day}.json`);
           const data = await response.json();
@@ -71,7 +71,15 @@
 
       function getCurrentLecture() {
         const now = new Date();
-        const day = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'][now.getDay()].toLowerCase();
+        const day = [
+          "sunday",
+          "monday",
+          "tuesday",
+          "wednesday",
+          "thursday",
+          "friday",
+          "saturday",
+        ][now.getDay()].toLowerCase();
         const time = now.toLocaleTimeString("en-US", {
           hour: "2-digit",
           minute: "2-digit",
@@ -90,7 +98,8 @@
       }
 
       function displayCurrentLecture() {
-        const currentLectureElement = document.getElementById("current-lecture");
+        const currentLectureElement =
+          document.getElementById("current-lecture");
         const lecture = getCurrentLecture();
 
         if (lecture) {
@@ -109,9 +118,19 @@
       function displayFullTimetable() {
         const fullTimetableElement = document.getElementById("full-timetable");
         const now = new Date();
-        const currentDay = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'][(now.getDay() + 1) % 7].toLowerCase();
+        const currentDay = [
+          "sunday",
+          "monday",
+          "tuesday",
+          "wednesday",
+          "thursday",
+          "friday",
+          "saturday",
+        ][(now.getDay() + 1) % 7].toLowerCase();
 
-        let html = `<h3>Tomorrow's Timetable (${currentDay.charAt(0).toUpperCase() + currentDay.slice(1)})</h3>`;
+        let html = `<h3>Tomorrow's Timetable (${
+          currentDay.charAt(0).toUpperCase() + currentDay.slice(1)
+        })</h3>`;
 
         if (timetable[currentDay]) {
           timetable[currentDay].forEach((lecture) => {
