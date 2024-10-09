@@ -72,7 +72,9 @@
         const [hour, minute] = time.split(":").map(Number);
         const period = hour >= 12 ? "PM" : "AM";
         const adjustedHour = hour % 12 || 12;
-        return `${adjustedHour}:${minute.toString().padStart(2, "0")} ${period}`;
+        return `${adjustedHour}:${minute
+          .toString()
+          .padStart(2, "0")} ${period}`;
       }
 
       function getCurrentLecture() {
@@ -90,7 +92,9 @@
 
         if (timetable[day]) {
           for (const lecture of timetable[day]) {
-            const [startHour, startMinute] = lecture.starttime.split(":").map(Number);
+            const [startHour, startMinute] = lecture.starttime
+              .split(":")
+              .map(Number);
             const [endHour, endMinute] = lecture.endtime.split(":").map(Number);
             const startTime = startHour * 60 + startMinute;
             const endTime = endHour * 60 + endMinute;
@@ -104,14 +108,17 @@
       }
 
       function displayCurrentLecture() {
-        const currentLectureElement = document.getElementById("current-lecture");
+        const currentLectureElement =
+          document.getElementById("current-lecture");
         const lecture = getCurrentLecture();
 
         if (lecture) {
           currentLectureElement.innerHTML = `
             <h2>Current Lecture</h2>
             <p><strong>Subject:</strong> ${lecture.subject}</p>
-            <p><strong>Time:</strong> ${convertTo12Hour(lecture.starttime)} - ${convertTo12Hour(lecture.endtime)}</p>
+            <p><strong>Time:</strong> ${convertTo12Hour(
+              lecture.starttime
+            )} - ${convertTo12Hour(lecture.endtime)}</p>
             <p><strong>Room:</strong> ${lecture.room}</p>
             <p><strong>Teacher:</strong> ${lecture.teacher}</p>
           `;
@@ -142,7 +149,9 @@
             html += `
               <div class="lecture">
                 <p><strong>${lecture.subject}</strong></p>
-                <p>Time: ${convertTo12Hour(lecture.starttime)} - ${convertTo12Hour(lecture.endtime)}</p>
+                <p>Time: ${convertTo12Hour(
+                  lecture.starttime
+                )} - ${convertTo12Hour(lecture.endtime)}</p>
                 <p>Room: ${lecture.room}</p>
                 <p>Teacher: ${lecture.teacher}</p>
               </div>
