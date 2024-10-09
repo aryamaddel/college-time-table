@@ -1,22 +1,26 @@
 [
   {
-    "time": "10:45am - 11:45am",
+    "starttime": "10:45",
+    "endtime": "11:45",
     "subject": "EVS",
     "room": "305",
     "teacher": "Dr. Rahul M"
   },
   {
-    "time": "11:45am - 12:45pm",
+    "starttime": "11:45",
+    "endtime": "12:45",
     "subject": "Data Structure",
     "room": "305",
     "teacher": "Mrs. Sharayu Mirasdar"
   },
   {
-    "time": "12:45pm - 1:35pm",
+    "starttime": "12:45",
+    "endtime": "13:35",
     "subject": "Lunch Break"
   },
   {
-    "time": "1:35pm - 03:35pm",
+    "starttime": "13:35",
+    "endtime": "15:35",
     "subject": "Java Practical",
     "room": "PrL",
     "teacher": "Dr. Rupali Chopade"

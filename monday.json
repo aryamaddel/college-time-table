@@ -1,18 +1,21 @@
 [
   {
-    "time": "08:30am - 10:30am",
+    "starttime": "08:30",
+    "endtime": "10:30",
     "subject": "DELD - Practical",
     "room": "308",
     "teacher": "Dr. Vaishali Kamble"
   },
   {
-    "time": "10:45am - 11:45am",
+    "starttime": "10:45",
+    "endtime": "11:45",
     "subject": "EVS",
     "room": "304",
     "teacher": "Dr. Rahul M"
   },
   {
-    "time": "11:45am - 12:45pm",
+    "starttime": "11:45",
+    "endtime": "12:45",
     "subject": "DELD",
     "room": "304",
     "teacher": "Dr. Vaishali Kamble"

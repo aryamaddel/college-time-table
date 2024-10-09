@@ -1,36 +1,42 @@
 [
   {
-    "time": "09:30am - 11:45am",
+    "starttime": "09:30",
+    "endtime": "11:45",
     "subject": "DSV",
     "room": "301",
     "teacher": "Prachi Jhoshi"
   },
   {
-    "time": "11:45am - 12:45pm",
+    "starttime": "11:45",
+    "endtime": "12:45",
     "subject": "Java",
     "room": "108",
-    "teacher": "Dr.Prajakta Khadikar"
+    "teacher": "Dr. Prajakta Khadikar"
   },
   {
-    "time": "12:45pm - 01:35pm",
+    "starttime": "12:45",
+    "endtime": "13:35",
     "subject": "Lunch Break"
   },
   {
-    "time": "01:35pm - 02:35pm",
+    "starttime": "13:35",
+    "endtime": "14:35",
     "subject": "DLED",
     "room": "108",
     "teacher": "Dr. Vaishali Kamble"
   },
   {
-    "time": "02:35pm - 03:35pm",
+    "starttime": "14:35",
+    "endtime": "15:35",
     "subject": "DS",
     "room": "PrL New",
     "teacher": ""
   },
   {
-    "time": "04:35pm - 05:35pm",
+    "starttime": "16:35",
+    "endtime": "17:35",
     "subject": "EGG Economics",
     "room": "305",
-    "teacher": "Mrs Shilpa Soman"
+    "teacher": "Mrs. Shilpa Soman"
   }
 ]
