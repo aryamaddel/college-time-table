@@ -2,13 +2,26 @@ let timetable = {};
 let currentDay = "";
 let currentLecture = null;
 
+// Cache DOM elements
+const currentLectureElement = document.getElementById("current-lecture");
+const fullTimetableElement = document.getElementById("full-timetable");
+const clockElement = document.getElementById("clock");
+
 async function loadTimetable() {
-  const days = ["monday", "tuesday", "wednesday", "thursday", "friday"];
-  for (const day of days) {
-    const response = await fetch(`${day}.json`);
-    const data = await response.json();
-    timetable[day] = data;
-  }
+  const daysOfWeek = ["monday", "tuesday", "wednesday", "thursday", "friday"];
+
+  // Using Promise.all to load timetable data in parallel
+  const timetableData = await Promise.all(
+    daysOfWeek.map((day) =>
+      fetch(`${day}.json`).then((response) => response.json())
+    )
+  );
+
+  // Assigning fetched data to timetable
+  daysOfWeek.forEach((day, index) => {
+    timetable[day] = timetableData[index];
+  });
+
   setupDaySelector();
   updateCurrentInfo();
   setInterval(updateCurrentInfo, 60000); // Update every minute
@@ -16,14 +29,14 @@ async function loadTimetable() {
 
 function setupDaySelector() {
   const daySelector = document.getElementById("day-selector");
-  const days = ["Mon", "Tue", "Wed", "Thu", "Fri"];
-  days.forEach((day, index) => {
+  const shortDays = ["Mon", "Tue", "Wed", "Thu", "Fri"];
+  const daysOfWeek = ["monday", "tuesday", "wednesday", "thursday", "friday"];
+
+  shortDays.forEach((day, index) => {
     const button = document.createElement("button");
     button.textContent = day;
     button.classList.add("day-button");
-    button.addEventListener("click", () =>
-      selectDay(["monday", "tuesday", "wednesday", "thursday", "friday"][index])
-    );
+    button.addEventListener("click", () => selectDay(daysOfWeek[index]));
     daySelector.appendChild(button);
   });
   selectDay(getCurrentDay());
@@ -86,7 +99,6 @@ function updateCurrentInfo() {
 }
 
 function displayCurrentLecture() {
-  const currentLectureElement = document.getElementById("current-lecture");
   currentLecture = getCurrentLecture();
 
   if (currentLecture) {
@@ -134,7 +146,6 @@ function updateProgressBar() {
 }
 
 function displayFullTimetable() {
-  const fullTimetableElement = document.getElementById("full-timetable");
   let html = `<h3>${
     currentDay.charAt(0).toUpperCase() + currentDay.slice(1)
   }'s Schedule</h3>`;
@@ -161,7 +172,6 @@ function displayFullTimetable() {
 }
 
 function updateClock() {
-  const clockElement = document.getElementById("clock");
   const now = new Date();
   clockElement.textContent = now.toLocaleTimeString([], {
     hour: "2-digit",
