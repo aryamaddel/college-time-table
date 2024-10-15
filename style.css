@@ -1,119 +1,144 @@
+:root {
+  --primary-color: #4a90e2;
+  --secondary-color: #f5f5f5;
+  --text-color: #333;
+  --card-bg: #ffffff;
+  --shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
+
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
-    Arial, sans-serif;
-  background-color: #f0f4f8;
-  color: #333;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
   line-height: 1.6;
-  padding: 16px;
+  color: var(--text-color);
+  background-color: var(--secondary-color);
 }
+
 .container {
-  max-width: 100%;
+  max-width: 800px;
   margin: 0 auto;
+  padding: 20px;
 }
-h1,
-h2,
-h3 {
-  color: #2c3e50;
-  margin-bottom: 16px;
-}
+
 h1 {
-  font-size: 24px;
   text-align: center;
+  color: var(--primary-color);
+  margin-bottom: 20px;
 }
-.card {
-  background-color: #fff;
-  border-radius: 12px;
-  padding: 16px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  margin-bottom: 16px;
-}
-#current-lecture {
-  border-left: 4px solid #3498db;
-}
-.lecture {
-  margin-bottom: 16px;
-  padding-bottom: 16px;
-  border-bottom: 1px solid #eee;
-}
-.lecture:last-child {
-  border-bottom: none;
-  margin-bottom: 0;
-  padding-bottom: 0;
-}
-.lecture-time {
+
+#clock {
+  display: block;
+  text-align: center;
+  font-size: 2rem;
   font-weight: bold;
-  color: #3498db;
-  font-size: 14px;
+  margin-bottom: 20px;
 }
-.lecture-subject {
-  font-size: 18px;
-  color: #2c3e50;
-  margin-bottom: 4px;
+
+.card {
+  background-color: var(--card-bg);
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow);
 }
-.lecture-details {
-  font-size: 14px;
-  color: #7f8c8d;
+
+#current-lecture {
+  border-left: 5px solid var(--primary-color);
 }
+
 #day-selector {
   display: flex;
-  overflow-x: auto;
-  margin-bottom: 16px;
-  -webkit-overflow-scrolling: touch;
+  justify-content: space-between;
+  margin-bottom: 20px;
 }
-.day-button {
-  padding: 8px 16px;
-  background-color: #3498db;
-  color: white;
+
+#day-selector button {
+  background-color: var(--secondary-color);
   border: none;
-  border-radius: 20px;
-  margin-right: 8px;
-  white-space: nowrap;
-  font-size: 14px;
-  flex-shrink: 0;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
-.day-button:last-child {
-  margin-right: 0;
+
+#day-selector button:hover,
+#day-selector button.active {
+  background-color: var(--primary-color);
+  color: white;
 }
-.day-button.active {
-  background-color: #2c3e50;
+
+#full-timetable .lecture {
+  border-bottom: 1px solid #eee;
+  padding: 10px 0;
 }
-#clock {
-  text-align: center;
-  font-size: 18px;
-  margin-bottom: 16px;
+
+#full-timetable .lecture:last-child {
+  border-bottom: none;
+}
+
+.lecture-subject {
   font-weight: bold;
+  color: var(--primary-color);
 }
-#progress-bar-container {
-  width: 100%;
-  background-color: #e0e0e0;
-  border-radius: 10px;
-  margin-top: 12px;
-  overflow: hidden;
+
+.lecture-time {
+  font-size: 0.9rem;
+  color: #666;
 }
-#progress-bar {
-  width: 0;
-  height: 8px;
-  background-color: #3498db;
-  transition: width 0.5s ease-in-out;
+
+.lecture-details {
+  font-size: 0.8rem;
+  color: #888;
 }
-/* Footer section */
+
 footer {
   text-align: center;
-  margin-top: 20px;
-  font-size: 14px;
-  color: #2c3e50;
+  padding: 20px;
+  font-size: 0.8rem;
+  color: #666;
 }
 
 footer a {
-  color: #3498db;
+  color: var(--primary-color);
   text-decoration: none;
 }
 
 footer a:hover {
   text-decoration: underline;
+}
+
+@media (max-width: 600px) {
+  .container {
+    padding: 10px;
+  }
+
+  #day-selector {
+    flex-wrap: wrap;
+  }
+
+  #day-selector button {
+    flex: 1 1 calc(20% - 5px);
+    margin-bottom: 5px;
+  }
+}
+
+#progress-bar-container {
+  width: 100%;
+  background-color: #e0e0e0;
+  border-radius: 5px;
+  margin-top: 10px;
+  overflow: hidden;
+}
+
+#progress-bar {
+  width: 0;
+  height: 10px;
+  background-color: var(--primary-color);
+  transition: width 0.5s ease-in-out;
 }

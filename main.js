@@ -10,10 +10,8 @@ async function loadTimetable() {
     timetable[day] = data;
   }
   setupDaySelector();
-  displayCurrentLecture();
-  displayFullTimetable();
-  updateClock();
-  setInterval(updateClock, 1000);
+  updateCurrentInfo();
+  setInterval(updateCurrentInfo, 60000); // Update every minute
 }
 
 function setupDaySelector() {
@@ -82,24 +80,29 @@ function getCurrentLecture() {
   return null;
 }
 
+function updateCurrentInfo() {
+  updateClock();
+  displayCurrentLecture();
+}
+
 function displayCurrentLecture() {
   const currentLectureElement = document.getElementById("current-lecture");
   currentLecture = getCurrentLecture();
 
   if (currentLecture) {
     currentLectureElement.innerHTML = `
-            <h2>Current Lecture</h2>
-            <p class="lecture-subject">${currentLecture.subject}</p>
-            <p class="lecture-time">${convertTo12Hour(
-              currentLecture.starttime
-            )} - ${convertTo12Hour(currentLecture.endtime)}</p>
-            <p class="lecture-details">Room: ${currentLecture.room} | ${
+      <h2>Current Lecture</h2>
+      <p class="lecture-subject">${currentLecture.subject}</p>
+      <p class="lecture-time">${convertTo12Hour(
+        currentLecture.starttime
+      )} - ${convertTo12Hour(currentLecture.endtime)}</p>
+      <p class="lecture-details">Room: ${currentLecture.room} | ${
       currentLecture.teacher
     }</p>
-            <div id="progress-bar-container">
-              <div id="progress-bar"></div>
-            </div>
-          `;
+      <div id="progress-bar-container">
+        <div id="progress-bar"></div>
+      </div>
+    `;
     updateProgressBar();
   } else {
     currentLectureElement.innerHTML = "<h2>No Current Lecture</h2>";
@@ -118,10 +121,15 @@ function updateProgressBar() {
     const endTime = endHour * 60 + endMinute;
     const totalDuration = endTime - startTime;
     const elapsedTime = currentTime - startTime;
-    const progressPercentage = (elapsedTime / totalDuration) * 100;
+    const progressPercentage = Math.min(
+      Math.max((elapsedTime / totalDuration) * 100, 0),
+      100
+    );
 
     const progressBar = document.getElementById("progress-bar");
-    progressBar.style.width = `${progressPercentage}%`;
+    if (progressBar) {
+      progressBar.style.width = `${progressPercentage}%`;
+    }
   }
 }
 
@@ -134,16 +142,16 @@ function displayFullTimetable() {
   if (timetable[currentDay]) {
     timetable[currentDay].forEach((lecture) => {
       html += `
-              <div class="lecture">
-                <p class="lecture-subject">${lecture.subject}</p>
-                <p class="lecture-time">${convertTo12Hour(
-                  lecture.starttime
-                )} - ${convertTo12Hour(lecture.endtime)}</p>
-                <p class="lecture-details">Room: ${lecture.room} | ${
+        <div class="lecture">
+          <p class="lecture-subject">${lecture.subject}</p>
+          <p class="lecture-time">${convertTo12Hour(
+            lecture.starttime
+          )} - ${convertTo12Hour(lecture.endtime)}</p>
+          <p class="lecture-details">Room: ${lecture.room} | ${
         lecture.teacher
       }</p>
-              </div>
-            `;
+        </div>
+      `;
     });
   } else {
     html += "<p>No classes scheduled for this day.</p>";
@@ -159,7 +167,6 @@ function updateClock() {
     hour: "2-digit",
     minute: "2-digit",
   });
-  displayCurrentLecture();
 }
 
 loadTimetable();
