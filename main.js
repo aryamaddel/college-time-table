@@ -1,6 +1,6 @@
 const DAYS_OF_WEEK = ["monday", "tuesday", "wednesday", "thursday", "friday"];
 const SHORT_DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri"];
-const UPDATE_INTERVAL = 6000; // 1 minute in milliseconds
+const UPDATE_INTERVAL = 1000; // 1 minute in milliseconds
 
 let timetable = {};
 let currentDay = "";
