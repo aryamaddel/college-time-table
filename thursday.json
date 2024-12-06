@@ -1,23 +1,9 @@
 [
   {
-    "starttime": "09:30",
-    "endtime": "11:30",
-    "subject": "Java",
-    "room": "IOTL",
-    "teacher": "Dr. Rupali Chopade"
-  },
-  {
-    "starttime": "11:45",
-    "endtime": "12:45",
-    "subject": "Finance and costing",
-    "room": "107",
-    "teacher": "Mrs. Surekha Jhoshi"
-  },
-  {
-    "starttime": "13:35",
-    "endtime": "15:35",
-    "subject": "Film",
-    "room": "513",
-    "teacher": "Dr. P Namjoshi"
+    "starttime": "09:00",
+    "endtime": "12:00",
+    "subject": "Data Structure",
+    "room": "Prl",
+    "teacher": "Prof. Chaitrali Sorte"
   }
 ]

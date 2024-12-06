@@ -1,23 +1,9 @@
 [
   {
-    "starttime": "10:45",
-    "endtime": "11:45",
-    "subject": "EVS",
-    "room": "305",
-    "teacher": "Dr. Rahul M"
-  },
-  {
-    "starttime": "11:45",
-    "endtime": "12:45",
-    "subject": "Data Structure",
-    "room": "305",
-    "teacher": "Mrs. Sharayu Mirasdar"
-  },
-  {
-    "starttime": "13:35",
-    "endtime": "15:35",
-    "subject": "Java Practical",
-    "room": "PrL",
-    "teacher": "Dr. Rupali Chopade"
+    "starttime": "09:00",
+    "endtime": "12:00",
+    "subject": "Java Programming",
+    "room": "Prl",
+    "teacher": "Prof. Rupali Chopade"
   }
 ]
