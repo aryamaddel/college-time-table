@@ -43,6 +43,10 @@
         ];
         const SHORT_DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri"];
 
+        // Define button class strings
+        const selectedClasses = "bg-blue-500 text-white";
+        const unselectedClasses = "bg-gray-200 text-gray-700";
+
         let timetable = {};
         let currentDay = "";
         let currentLecture = null;
@@ -72,7 +76,6 @@
           try {
             const response = await fetch("timetable.json");
             if (!response.ok) throw new Error("Failed to load timetable");
-
             timetable = await response.json();
             setupDaySelector();
             updateCurrentInfo();
@@ -89,7 +92,7 @@
           SHORT_DAYS.forEach((day, index) => {
             const button = document.createElement("button");
             button.textContent = day;
-            button.className = "py-2 px-4 rounded-lg focus:outline-none";
+            button.className = `py-2 px-4 rounded-lg focus:outline-none ${unselectedClasses}`;
             button.addEventListener("click", () =>
               selectDay(DAYS_OF_WEEK[index])
             );
@@ -103,11 +106,11 @@
           document
             .querySelectorAll("#day-selector button")
             .forEach((btn, index) => {
-              const isSelected = DAYS_OF_WEEK[index] === day;
-              btn.classList.toggle("bg-blue-500", isSelected);
-              btn.classList.toggle("text-white", isSelected);
-              btn.classList.toggle("bg-gray-200", !isSelected);
-              btn.classList.toggle("text-gray-700", !isSelected);
+              const classes =
+                DAYS_OF_WEEK[index] === day
+                  ? selectedClasses
+                  : unselectedClasses;
+              btn.className = `py-2 px-4 rounded-lg focus:outline-none ${classes}`;
             });
           displayFullTimetable();
         }
@@ -194,27 +197,25 @@
 
         function displayFullTimetable() {
           const daySchedule = timetable[currentDay];
-
           let content = `<h3 class="text-lg font-semibold mb-4">${currentDay}'s Schedule</h3>`;
-
           if (daySchedule?.length) {
-            content += '<div class="space-y-4">';
-            daySchedule.forEach(({ lecture, start_time, end_time, room }) => {
-              content += `
-                <div class="border-l-4 border-blue-500 pl-4 py-2">
-                  <p class="font-bold text-gray-800">${lecture}</p>
-                  <p class="text-sm text-gray-600">${convertTo12Hour(
-                    start_time
-                  )} - ${convertTo12Hour(end_time)}</p>
-                  <p class="text-sm text-gray-600">Room: ${room}</p>
-                </div>
-              `;
-            });
-            content += "</div>";
+            const lecturesHtml = daySchedule
+              .map(
+                ({ lecture, start_time, end_time, room }) => `
+                  <div class="border-l-4 border-blue-500 pl-4 py-2">
+                    <p class="font-bold text-gray-800">${lecture}</p>
+                    <p class="text-sm text-gray-600">${convertTo12Hour(
+                      start_time
+                    )} - ${convertTo12Hour(end_time)}</p>
+                    <p class="text-sm text-gray-600">Room: ${room}</p>
+                  </div>
+                `
+              )
+              .join("");
+            content += `<div class="space-y-4">${lecturesHtml}</div>`;
           } else {
             content += `<p class="text-gray-500">No classes scheduled for this day.</p>`;
           }
-
           elements.timetable.innerHTML = content;
         }
 
