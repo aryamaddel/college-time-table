@@ -1,0 +1,138 @@
+{
+  "Monday": [
+    {
+      "start_time": "09:30",
+      "end_time": "10:30",
+      "lecture": "ISD",
+      "room": "303"
+    },
+    {
+      "start_time": "10:40",
+      "end_time": "11:40",
+      "lecture": "COA",
+      "room": "304"
+    },
+    {
+      "start_time": "11:40",
+      "end_time": "12:40",
+      "lecture": "SE",
+      "room": "304"
+    },
+    {
+      "start_time": "13:30",
+      "end_time": "15:30",
+      "lecture": "PB",
+      "room": "PRL Lab"
+    }
+  ],
+  "Tuesday": [
+    {
+      "start_time": "08:30",
+      "end_time": "09:30",
+      "lecture": "DS",
+      "room": "303"
+    },
+    {
+      "start_time": "09:30",
+      "end_time": "10:30",
+      "lecture": "FBM",
+      "room": "303"
+    },
+    {
+      "start_time": "10:40",
+      "end_time": "12:40",
+      "lecture": "SE",
+      "room": "301"
+    },
+    {
+      "start_time": "13:30",
+      "end_time": "14:30",
+      "lecture": "Behavioral Sciences",
+      "room": "310"
+    }
+  ],
+  "Wednesday": [
+    {
+      "start_time": "10:40",
+      "end_time": "11:40",
+      "lecture": "COA",
+      "room": "310"
+    },
+    {
+      "start_time": "11:40",
+      "end_time": "12:40",
+      "lecture": "PP",
+      "room": "310"
+    },
+    {
+      "start_time": "13:30",
+      "end_time": "14:30",
+      "lecture": "DM",
+      "room": "108"
+    },
+    {
+      "start_time": "14:30",
+      "end_time": "16:30",
+      "lecture": "DS",
+      "room": "SL"
+    }
+  ],
+  "Thursday": [
+    {
+      "start_time": "09:30",
+      "end_time": "10:30",
+      "lecture": "ISD",
+      "room": "303"
+    },
+    {
+      "start_time": "10:40",
+      "end_time": "11:40",
+      "lecture": "BS",
+      "room": "301"
+    },
+    {
+      "start_time": "11:40",
+      "end_time": "12:40",
+      "lecture": "DBMS",
+      "room": "310"
+    },
+    {
+      "start_time": "13:30",
+      "end_time": "15:30",
+      "lecture": "DBMS",
+      "room": "SL Lab"
+    }
+  ],
+  "Friday": [
+    {
+      "start_time": "08:30",
+      "end_time": "09:30",
+      "lecture": "DS",
+      "room": "311"
+    },
+    {
+      "start_time": "09:30",
+      "end_time": "10:30",
+      "lecture": "FBM",
+      "room": "311"
+    },
+    {
+      "start_time": "10:40",
+      "end_time": "11:40",
+      "lecture": "DBMS",
+      "room": "311"
+    },
+    {
+      "start_time": "11:40",
+      "end_time": "12:40",
+      "lecture": "SE",
+      "room": "311"
+    },
+    {
+      "start_time": "13:30",
+      "end_time": "14:30",
+      "lecture": "DM",
+      "room": "311"
+    }
+  ]
+}

@@ -4,28 +4,47 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Mobile Timetable</title>
-    <link rel="stylesheet" href="style.css" />
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
   </head>
-  <body>
-    <main class="container">
-      <h1>PR/OR Exam</h1>
-      <time id="clock"></time>
-      <section id="current-lecture" class="card"></section>
-      <nav id="day-selector"></nav>
-      <section id="full-timetable" class="card"></section>
+  <body class="bg-gray-100 min-h-screen">
+    <main class="container mx-auto px-4 py-6">
+      <h1 class="text-2xl font-bold text-center mb-4">PR/OR Exam</h1>
+      <time id="clock" class="block text-center text-xl mb-6"></time>
+
+      <section
+        id="current-lecture"
+        class="bg-white rounded-lg shadow-md p-4 mb-6"
+      ></section>
+
+      <nav id="day-selector" class="flex justify-between mb-6"></nav>
+
+      <section
+        id="full-timetable"
+        class="bg-white rounded-lg shadow-md p-4"
+      ></section>
     </main>
-    <footer>
-      <p>Made by <a href="https://github.com/aryamaddel">Arya Maddel</a> 💚</p>
+
+    <footer class="text-center py-4 text-gray-600">
+      <p>
+        Made by
+        <a
+          href="https://github.com/aryamaddel"
+          class="text-green-600 hover:underline"
+          >Arya Maddel</a
+        >
+        💚
+      </p>
     </footer>
 
     <script>
       document.addEventListener("DOMContentLoaded", () => {
         const DAYS_OF_WEEK = [
-          "monday",
-          "tuesday",
-          "wednesday",
-          "thursday",
-          "friday",
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
         ];
         const SHORT_DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri"];
         const UPDATE_INTERVAL = 1000;
@@ -58,25 +77,12 @@
 
         async function loadTimetable() {
           try {
-            const timetableData = await Promise.all(
-              DAYS_OF_WEEK.map(async (day) => {
-                try {
-                  const response = await fetch(`${day}.json`);
-                  if (!response.ok) {
-                    console.warn(`No timetable found for ${day}`);
-                    return [];
-                  }
-                  return await response.json();
-                } catch (error) {
-                  console.warn(`Error loading ${day} timetable:`, error);
-                  return [];
-                }
-              })
-            );
+            const response = await fetch("timetable.json");
+            if (!response.ok) {
+              throw new Error("Failed to load timetable");
+            }
 
-            DAYS_OF_WEEK.forEach((day, index) => {
-              timetable[day] = timetableData[index];
-            });
+            timetable = await response.json();
 
             setupDaySelector();
             updateCurrentInfo();
@@ -84,7 +90,7 @@
           } catch (error) {
             console.error("Error loading timetable:", error);
             currentLectureElement.innerHTML =
-              "<p>Failed to load timetable. Please try again later.</p>";
+              "<p class='text-red-500'>Failed to load timetable. Please try again later.</p>";
           }
         }
 
@@ -93,7 +99,7 @@
           SHORT_DAYS.forEach((day, index) => {
             const button = document.createElement("button");
             button.textContent = day;
-            button.classList.add("day-button");
+            button.className = "py-2 px-4 rounded-lg focus:outline-none";
             button.addEventListener("click", () =>
               selectDay(DAYS_OF_WEEK[index])
             );
@@ -104,9 +110,17 @@
 
         function selectDay(day) {
           currentDay = day;
-          document.querySelectorAll(".day-button").forEach((btn, index) => {
-            btn.classList.toggle("active", DAYS_OF_WEEK[index] === day);
-          });
+          document
+            .querySelectorAll("#day-selector button")
+            .forEach((btn, index) => {
+              if (DAYS_OF_WEEK[index] === day) {
+                btn.classList.add("bg-blue-500", "text-white");
+                btn.classList.remove("bg-gray-200", "text-gray-700");
+              } else {
+                btn.classList.add("bg-gray-200", "text-gray-700");
+                btn.classList.remove("bg-blue-500", "text-white");
+              }
+            });
           displayFullTimetable();
         }
 
@@ -117,10 +131,10 @@
 
           return (
             timetable[day]?.find((lecture) => {
-              const [startHour, startMinute] = lecture.starttime
+              const [startHour, startMinute] = lecture.start_time
                 .split(":")
                 .map(Number);
-              const [endHour, endMinute] = lecture.endtime
+              const [endHour, endMinute] = lecture.end_time
                 .split(":")
                 .map(Number);
               const startTime = startHour * 60 + startMinute;
@@ -139,22 +153,24 @@
           currentLecture = getCurrentLecture();
 
           if (currentLecture) {
-            const { subject, starttime, endtime, room, teacher } =
-              currentLecture;
+            const { lecture, start_time, end_time, room } = currentLecture;
             currentLectureElement.innerHTML = `
-              <h2>Current Lecture</h2>
-              <p class="lecture-subject">${subject}</p>
-              <p class="lecture-time">${convertTo12Hour(
-                starttime
-              )} - ${convertTo12Hour(endtime)}</p>
-              <p class="lecture-details">Room: ${room} | ${teacher}</p>
-              <div id="progress-bar-container">
-                <div id="progress-bar"></div>
+              <h2 class="text-xl font-semibold mb-2">Current Lecture</h2>
+              <p class="text-lg font-bold text-blue-600">${lecture}</p>
+              <p class="text-md">${convertTo12Hour(
+                start_time
+              )} - ${convertTo12Hour(end_time)}</p>
+              <p class="text-md">Room: ${room}</p>
+              <div class="w-full bg-gray-200 rounded-full h-2.5 mt-4">
+                <div id="progress-bar" class="bg-blue-600 h-2.5 rounded-full"></div>
               </div>
             `;
             updateProgressBar();
           } else {
-            currentLectureElement.innerHTML = "<h2>No Current Lecture</h2>";
+            currentLectureElement.innerHTML = `
+              <h2 class="text-xl font-semibold mb-2">No Current Lecture</h2>
+              <p class="text-gray-500">Enjoy your break!</p>
+            `;
           }
         }
 
@@ -162,10 +178,10 @@
           if (currentLecture) {
             const now = new Date();
             const currentTime = now.getHours() * 60 + now.getMinutes();
-            const [startHour, startMinute] = currentLecture.starttime
+            const [startHour, startMinute] = currentLecture.start_time
               .split(":")
               .map(Number);
-            const [endHour, endMinute] = currentLecture.endtime
+            const [endHour, endMinute] = currentLecture.end_time
               .split(":")
               .map(Number);
             const startTime = startHour * 60 + startMinute;
@@ -186,27 +202,29 @@
 
         function displayFullTimetable() {
           const daySchedule = timetable[currentDay];
-          const capitalizedDay =
-            currentDay.charAt(0).toUpperCase() + currentDay.slice(1);
 
-          const scheduleHTML = daySchedule
-            ? daySchedule
-                .map(
-                  ({ subject, starttime, endtime, room, teacher }) => `
-                  <div class="lecture">
-                    <p class="lecture-subject">${subject}</p>
-                    <p class="lecture-time">${convertTo12Hour(
-                      starttime
-                    )} - ${convertTo12Hour(endtime)}</p>
-                    <p class="lecture-details">Room: ${room} | ${teacher}</p>
-                  </div>
-                `
-                )
-                .join("")
-            : "<p>No classes scheduled for this day.</p>";
+          let scheduleHTML = '<div class="space-y-4">';
+
+          if (daySchedule && daySchedule.length > 0) {
+            daySchedule.forEach(({ lecture, start_time, end_time, room }) => {
+              scheduleHTML += `
+                <div class="border-l-4 border-blue-500 pl-4 py-2">
+                  <p class="font-bold text-gray-800">${lecture}</p>
+                  <p class="text-sm text-gray-600">${convertTo12Hour(
+                    start_time
+                  )} - ${convertTo12Hour(end_time)}</p>
+                  <p class="text-sm text-gray-600">Room: ${room}</p>
+                </div>
+              `;
+            });
+          } else {
+            scheduleHTML += `<p class="text-gray-500">No classes scheduled for this day.</p>`;
+          }
+
+          scheduleHTML += "</div>";
 
           fullTimetableElement.innerHTML = `
-            <h3>${capitalizedDay}'s Schedule</h3>
+            <h3 class="text-lg font-semibold mb-4">${currentDay}'s Schedule</h3>
             ${scheduleHTML}
           `;
         }
