@@ -44,7 +44,7 @@
         const SHORT_DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri"];
 
         // Define button class strings
-        const selectedClasses = "bg-blue-500 text-white";
+        const selectedClasses = "bg-green-500 text-white";
         const unselectedClasses = "bg-gray-200 text-gray-700";
 
         let timetable = {};
@@ -150,13 +150,13 @@
             const { lecture, start_time, end_time, room } = currentLecture;
             elements.currentLecture.innerHTML = `
               <h2 class="text-xl font-semibold mb-2">Current Lecture</h2>
-              <p class="text-lg font-bold text-blue-600">${lecture}</p>
+              <p class="text-lg font-bold text-green-600">${lecture}</p>
               <p class="text-md">${convertTo12Hour(
                 start_time
               )} - ${convertTo12Hour(end_time)}</p>
               <p class="text-md">Room: ${room}</p>
               <div class="w-full bg-gray-200 rounded-full h-2.5 mt-4">
-                <div id="progress-bar" class="bg-blue-600 h-2.5 rounded-full"></div>
+                <div id="progress-bar" class="bg-green-600 h-2.5 rounded-full"></div>
               </div>
             `;
             updateProgressBar();
@@ -202,7 +202,7 @@
             const lecturesHtml = daySchedule
               .map(
                 ({ lecture, start_time, end_time, room }) => `
-                  <div class="border-l-4 border-blue-500 pl-4 py-2">
+                  <div class="border-l-4 border-green-500 pl-4 py-2">
                     <p class="font-bold text-gray-800">${lecture}</p>
                     <p class="text-sm text-gray-600">${convertTo12Hour(
                       start_time
