@@ -4,20 +4,16 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Mobile Timetable</title>
-    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
   </head>
   <body class="bg-gray-100 min-h-screen">
     <main class="container mx-auto px-4 py-6">
       <time id="clock" class="block text-center text-xl mb-6"></time>
-
       <section
         id="current-lecture"
         class="bg-white rounded-lg shadow-md p-4 mb-6"
       ></section>
-
       <nav id="day-selector" class="flex justify-between mb-6"></nav>
-
       <section
         id="full-timetable"
         class="bg-white rounded-lg shadow-md p-4"
@@ -38,6 +34,7 @@
 
     <script>
       document.addEventListener("DOMContentLoaded", () => {
+        // Constants
         const DAYS_OF_WEEK = [
           "Monday",
           "Tuesday",
@@ -46,55 +43,54 @@
           "Friday",
         ];
         const SHORT_DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri"];
-        const UPDATE_INTERVAL = 1000;
 
+        // State variables
         let timetable = {};
         let currentDay = "";
         let currentLecture = null;
 
-        const currentLectureElement =
-          document.getElementById("current-lecture");
-        const fullTimetableElement = document.getElementById("full-timetable");
-        const clockElement = document.getElementById("clock");
-        const daySelector = document.getElementById("day-selector");
+        // DOM elements
+        const elements = {
+          currentLecture: document.getElementById("current-lecture"),
+          timetable: document.getElementById("full-timetable"),
+          clock: document.getElementById("clock"),
+          daySelector: document.getElementById("day-selector"),
+        };
 
-        const getCurrentDay = () => {
+        // Helper functions
+        function getCurrentDay() {
           const day = new Date().getDay() - 1;
           return day >= 0 && day < DAYS_OF_WEEK.length
             ? DAYS_OF_WEEK[day]
             : DAYS_OF_WEEK[0];
-        };
+        }
 
-        const convertTo12Hour = (time) => {
+        function convertTo12Hour(time) {
           const [hour, minute] = time.split(":").map(Number);
-          const period = hour >= 12 ? "PM" : "AM";
-          const adjustedHour = hour % 12 || 12;
-          return `${adjustedHour}:${minute
-            .toString()
-            .padStart(2, "0")} ${period}`;
-        };
+          return `${hour % 12 || 12}:${minute.toString().padStart(2, "0")} ${
+            hour >= 12 ? "PM" : "AM"
+          }`;
+        }
 
+        // Core functionality
         async function loadTimetable() {
           try {
             const response = await fetch("timetable.json");
-            if (!response.ok) {
-              throw new Error("Failed to load timetable");
-            }
+            if (!response.ok) throw new Error("Failed to load timetable");
 
             timetable = await response.json();
-
             setupDaySelector();
             updateCurrentInfo();
-            setInterval(updateCurrentInfo, UPDATE_INTERVAL);
+            setInterval(updateCurrentInfo, 1000);
           } catch (error) {
             console.error("Error loading timetable:", error);
-            currentLectureElement.innerHTML =
+            elements.currentLecture.innerHTML =
               "<p class='text-red-500'>Failed to load timetable. Please try again later.</p>";
           }
         }
 
         function setupDaySelector() {
-          daySelector.innerHTML = ""; // Clear any existing buttons
+          elements.daySelector.innerHTML = "";
           SHORT_DAYS.forEach((day, index) => {
             const button = document.createElement("button");
             button.textContent = day;
@@ -102,7 +98,7 @@
             button.addEventListener("click", () =>
               selectDay(DAYS_OF_WEEK[index])
             );
-            daySelector.appendChild(button);
+            elements.daySelector.appendChild(button);
           });
           selectDay(getCurrentDay());
         }
@@ -112,13 +108,11 @@
           document
             .querySelectorAll("#day-selector button")
             .forEach((btn, index) => {
-              if (DAYS_OF_WEEK[index] === day) {
-                btn.classList.add("bg-blue-500", "text-white");
-                btn.classList.remove("bg-gray-200", "text-gray-700");
-              } else {
-                btn.classList.add("bg-gray-200", "text-gray-700");
-                btn.classList.remove("bg-blue-500", "text-white");
-              }
+              const isSelected = DAYS_OF_WEEK[index] === day;
+              btn.classList.toggle("bg-blue-500", isSelected);
+              btn.classList.toggle("text-white", isSelected);
+              btn.classList.toggle("bg-gray-200", !isSelected);
+              btn.classList.toggle("text-gray-700", !isSelected);
             });
           displayFullTimetable();
         }
@@ -126,7 +120,7 @@
         function getCurrentLecture() {
           const now = new Date();
           const day = getCurrentDay();
-          const currentTime = now.getHours() * 60 + now.getMinutes();
+          const currentMinutes = now.getHours() * 60 + now.getMinutes();
 
           return (
             timetable[day]?.find((lecture) => {
@@ -136,24 +130,27 @@
               const [endHour, endMinute] = lecture.end_time
                 .split(":")
                 .map(Number);
-              const startTime = startHour * 60 + startMinute;
-              const endTime = endHour * 60 + endMinute;
-              return currentTime >= startTime && currentTime <= endTime;
+              const startMinutes = startHour * 60 + startMinute;
+              const endMinutes = endHour * 60 + endMinute;
+              return (
+                currentMinutes >= startMinutes && currentMinutes <= endMinutes
+              );
             }) || null
           );
         }
 
         function updateCurrentInfo() {
-          updateClock();
-          displayCurrentLecture();
-        }
+          elements.clock.textContent = new Date().toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+          });
 
-        function displayCurrentLecture() {
           currentLecture = getCurrentLecture();
 
           if (currentLecture) {
             const { lecture, start_time, end_time, room } = currentLecture;
-            currentLectureElement.innerHTML = `
+            elements.currentLecture.innerHTML = `
               <h2 class="text-xl font-semibold mb-2">Current Lecture</h2>
               <p class="text-lg font-bold text-blue-600">${lecture}</p>
               <p class="text-md">${convertTo12Hour(
@@ -166,7 +163,7 @@
             `;
             updateProgressBar();
           } else {
-            currentLectureElement.innerHTML = `
+            elements.currentLecture.innerHTML = `
               <h2 class="text-xl font-semibold mb-2">No Current Lecture</h2>
               <p class="text-gray-500">Enjoy your break!</p>
             `;
@@ -174,39 +171,41 @@
         }
 
         function updateProgressBar() {
-          if (currentLecture) {
-            const now = new Date();
-            const currentTime = now.getHours() * 60 + now.getMinutes();
-            const [startHour, startMinute] = currentLecture.start_time
-              .split(":")
-              .map(Number);
-            const [endHour, endMinute] = currentLecture.end_time
-              .split(":")
-              .map(Number);
-            const startTime = startHour * 60 + startMinute;
-            const endTime = endHour * 60 + endMinute;
-            const totalDuration = endTime - startTime;
-            const elapsedTime = currentTime - startTime;
-            const progressPercentage = Math.min(
-              Math.max((elapsedTime / totalDuration) * 100, 0),
-              100
-            );
+          if (!currentLecture) return;
 
-            const progressBar = document.getElementById("progress-bar");
-            if (progressBar) {
-              progressBar.style.width = `${progressPercentage}%`;
-            }
+          const now = new Date();
+          const currentMinutes = now.getHours() * 60 + now.getMinutes();
+          const [startHour, startMinute] = currentLecture.start_time
+            .split(":")
+            .map(Number);
+          const [endHour, endMinute] = currentLecture.end_time
+            .split(":")
+            .map(Number);
+          const startMinutes = startHour * 60 + startMinute;
+          const endMinutes = endHour * 60 + endMinute;
+
+          const totalDuration = endMinutes - startMinutes;
+          const elapsedTime = currentMinutes - startMinutes;
+          const progressPercentage = Math.min(
+            Math.max((elapsedTime / totalDuration) * 100, 0),
+            100
+          );
+
+          const progressBar = document.getElementById("progress-bar");
+          if (progressBar) {
+            progressBar.style.width = `${progressPercentage}%`;
           }
         }
 
         function displayFullTimetable() {
           const daySchedule = timetable[currentDay];
 
-          let scheduleHTML = '<div class="space-y-4">';
+          let content = `<h3 class="text-lg font-semibold mb-4">${currentDay}'s Schedule</h3>`;
 
-          if (daySchedule && daySchedule.length > 0) {
+          if (daySchedule?.length) {
+            content += '<div class="space-y-4">';
             daySchedule.forEach(({ lecture, start_time, end_time, room }) => {
-              scheduleHTML += `
+              content += `
                 <div class="border-l-4 border-blue-500 pl-4 py-2">
                   <p class="font-bold text-gray-800">${lecture}</p>
                   <p class="text-sm text-gray-600">${convertTo12Hour(
@@ -216,26 +215,15 @@
                 </div>
               `;
             });
+            content += "</div>";
           } else {
-            scheduleHTML += `<p class="text-gray-500">No classes scheduled for this day.</p>`;
+            content += `<p class="text-gray-500">No classes scheduled for this day.</p>`;
           }
 
-          scheduleHTML += "</div>";
-
-          fullTimetableElement.innerHTML = `
-            <h3 class="text-lg font-semibold mb-4">${currentDay}'s Schedule</h3>
-            ${scheduleHTML}
-          `;
+          elements.timetable.innerHTML = content;
         }
 
-        function updateClock() {
-          clockElement.textContent = new Date().toLocaleTimeString([], {
-            hour: "2-digit",
-            minute: "2-digit",
-            second: "2-digit",
-          });
-        }
-
+        // Initialize
         loadTimetable();
       });
     </script>
