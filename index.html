@@ -34,7 +34,6 @@
 
     <script>
       document.addEventListener("DOMContentLoaded", () => {
-        // Constants
         const DAYS_OF_WEEK = [
           "Monday",
           "Tuesday",
@@ -44,12 +43,10 @@
         ];
         const SHORT_DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri"];
 
-        // State variables
         let timetable = {};
         let currentDay = "";
         let currentLecture = null;
 
-        // DOM elements
         const elements = {
           currentLecture: document.getElementById("current-lecture"),
           timetable: document.getElementById("full-timetable"),
@@ -57,7 +54,6 @@
           daySelector: document.getElementById("day-selector"),
         };
 
-        // Helper functions
         function getCurrentDay() {
           const day = new Date().getDay() - 1;
           return day >= 0 && day < DAYS_OF_WEEK.length
@@ -72,7 +68,6 @@
           }`;
         }
 
-        // Core functionality
         async function loadTimetable() {
           try {
             const response = await fetch("timetable.json");
@@ -223,7 +218,6 @@
           elements.timetable.innerHTML = content;
         }
 
-        // Initialize
         loadTimetable();
       });
     </script>
