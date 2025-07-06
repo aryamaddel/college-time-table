@@ -10,89 +10,158 @@
         darkMode: "class",
       };
     </script>
+    <style>
+      .loading-spinner {
+        border: 3px solid #f3f4f6;
+        border-top: 3px solid #10b981;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        animation: spin 1s linear infinite;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      .content-hidden {
+        opacity: 0;
+        visibility: hidden;
+      }
+
+      .content-visible {
+        opacity: 1;
+        visibility: visible;
+        transition: opacity 0.25s ease-in-out;
+      }
+    </style>
   </head>
   <body
     class="bg-gray-100 dark:bg-gray-900 min-h-screen text-gray-900 dark:text-white transition-colors duration-300"
   >
-    <main class="container mx-auto px-4 py-6">
-      <div class="flex justify-between items-center mb-6">
-        <time
-          id="clock"
-          class="text-xl text-gray-900 dark:text-gray-100"
-        ></time>
-        <button
-          id="theme-toggle"
-          class="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
-          aria-label="Toggle theme"
-        >
-          <svg
-            id="sun-icon"
-            class="w-5 h-5 hidden dark:block"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
-              clip-rule="evenodd"
-            ></path>
-          </svg>
-          <svg
-            id="moon-icon"
-            class="w-5 h-5 block dark:hidden"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-          >
-            <path
-              d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"
-            ></path>
-          </svg>
-        </button>
-      </div>
-      <section
-        id="current-lecture"
-        class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 mb-6"
-      ></section>
-      <nav id="day-selector" class="flex justify-between mb-6"></nav>
-      <section
-        id="full-timetable"
-        class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4"
-      ></section>
-    </main>
-
-    <footer class="text-center py-6 text-gray-600 dark:text-gray-400">
-      <p class="mb-4">
-        Made by
-        <a
-          href="https://github.com/aryamaddel"
-          class="text-green-600 dark:text-green-400 hover:underline"
-          >Arya Maddel</a
-        >
-        💚
-      </p>
-      <div
-        class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-4"
-      >
-        <a
-          href="https://github.com/aryamaddel/college-time-table"
-          class="inline-flex items-center px-4 py-2 bg-gray-800 dark:bg-gray-700 text-white text-sm font-medium rounded-lg hover:bg-gray-700 dark:hover:bg-gray-600 transition-colors"
-        >
-          <!-- ...existing SVG... -->
-          View on GitHub
-        </a>
-        <p class="text-xs text-gray-500">
-          Found an error?
-          <a
-            href="https://github.com/aryamaddel/college-time-table/pulls"
-            class="text-blue-600 dark:text-blue-400 hover:underline"
-            >Create a PR</a
-          >
-          to change it.
+    <!-- Loading Screen -->
+    <div
+      id="loading-screen"
+      class="fixed inset-0 bg-gray-100 dark:bg-gray-900 flex items-center justify-center z-50"
+    >
+      <div class="text-center">
+        <div class="loading-spinner mx-auto mb-4"></div>
+        <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+          Loading Timetable
+        </h2>
+        <p class="text-gray-600 dark:text-gray-400">
+          Please wait while we prepare your schedule...
         </p>
       </div>
-    </footer>
+    </div>
+
+    <!-- Main Content -->
+    <div id="main-content" class="content-hidden">
+      <main class="container mx-auto px-4 py-6">
+        <div class="flex justify-between items-center mb-6">
+          <time
+            id="clock"
+            class="text-xl text-gray-900 dark:text-gray-100"
+          ></time>
+          <button
+            id="theme-toggle"
+            class="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+            aria-label="Toggle theme"
+          >
+            <svg
+              id="sun-icon"
+              class="w-5 h-5 hidden dark:block"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
+                clip-rule="evenodd"
+              ></path>
+            </svg>
+            <svg
+              id="moon-icon"
+              class="w-5 h-5 block dark:hidden"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+            >
+              <path
+                d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"
+              ></path>
+            </svg>
+          </button>
+        </div>
+        <section
+          id="current-lecture"
+          class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 mb-6"
+        ></section>
+        <nav id="day-selector" class="flex justify-between mb-6"></nav>
+        <section
+          id="full-timetable"
+          class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4"
+        ></section>
+      </main>
+
+      <footer class="text-center py-6 text-gray-600 dark:text-gray-400">
+        <p class="mb-4">
+          Made by
+          <a
+            href="https://github.com/aryamaddel"
+            class="text-green-600 dark:text-green-400 hover:underline"
+            >Arya Maddel</a
+          >
+          💚
+        </p>
+        <div
+          class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-4"
+        >
+          <a
+            href="https://github.com/aryamaddel/college-time-table"
+            class="inline-flex items-center px-4 py-2 bg-gray-800 dark:bg-gray-700 text-white text-sm font-medium rounded-lg hover:bg-gray-700 dark:hover:bg-gray-600 transition-colors"
+          >
+            <!-- ...existing SVG... -->
+            View on GitHub
+          </a>
+          <p class="text-xs text-gray-500">
+            Found an error?
+            <a
+              href="https://github.com/aryamaddel/college-time-table/pulls"
+              class="text-blue-600 dark:text-blue-400 hover:underline"
+              >Create a PR</a
+            >
+            to change it.
+          </p>
+        </div>
+      </footer>
+    </div>
 
     <script>
+      // Show loading screen initially and hide when everything is ready
+      window.addEventListener("load", () => {
+        // Ensure a minimum loading time for better UX
+        setTimeout(() => {
+          hideLoadingScreen();
+        }, 1000);
+      });
+
+      function hideLoadingScreen() {
+        const loadingScreen = document.getElementById("loading-screen");
+        const mainContent = document.getElementById("main-content");
+
+        loadingScreen.style.opacity = "0";
+        setTimeout(() => {
+          loadingScreen.style.display = "none";
+          mainContent.classList.remove("content-hidden");
+          mainContent.classList.add("content-visible");
+        }, 300);
+      }
+
       document.addEventListener("DOMContentLoaded", () => {
         const DAYS_OF_WEEK = [
           "Monday",
@@ -144,7 +213,7 @@
           } catch (error) {
             console.error("Error loading timetable:", error);
             elements.currentLecture.innerHTML =
-              "<p class='text-red-500'>Failed to load timetable. Please try again later.</p>";
+              "<p class='text-red-500 dark:text-red-400'>Failed to load timetable. Please try again later.</p>";
           }
         }
 
@@ -300,7 +369,7 @@
 
         themeToggle.addEventListener("click", toggleTheme);
 
-        // Initialize theme before loading timetable
+        // Load timetable after DOM is ready
         loadTimetable();
       });
     </script>
