@@ -4,75 +4,354 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Mobile Timetable</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        darkMode: "class",
-      };
-    </script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Oxygen, Ubuntu, Cantarell, sans-serif;
+        background-color: #f3f4f6;
+        color: #111827;
+        min-height: 100vh;
+        line-height: 1.5;
+        transition: background-color 0.3s ease, color 0.3s ease;
+      }
+
+      body.dark {
+        background-color: #111827;
+        color: #ffffff;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 1.5rem 1rem;
+      }
+
+      /* Header */
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+      }
+
+      .clock {
+        font-size: 1.25rem;
+        font-family: "Courier New", monospace;
+        font-weight: 600;
+      }
+
+      .theme-toggle {
+        padding: 0.5rem;
+        border: none;
+        border-radius: 0.5rem;
+        background-color: #e5e7eb;
+        cursor: pointer;
+        font-size: 1.2rem;
+        transition: background-color 0.3s ease;
+      }
+
+      .theme-toggle:hover {
+        background-color: #d1d5db;
+      }
+
+      body.dark .theme-toggle {
+        background-color: #374151;
+      }
+
+      body.dark .theme-toggle:hover {
+        background-color: #4b5563;
+      }
+
+      /* Cards */
+      .card {
+        background-color: #ffffff;
+        border-radius: 0.5rem;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+        transition: background-color 0.3s ease;
+      }
+
+      body.dark .card {
+        background-color: #1f2937;
+      }
+
+      .card-title {
+        font-size: 1.125rem;
+        font-weight: 600;
+        margin-bottom: 0.75rem;
+      }
+
+      /* Current Lecture */
+      .current-lecture {
+        color: #6b7280;
+      }
+
+      body.dark .current-lecture {
+        color: #9ca3af;
+      }
+
+      .current-lecture.active {
+        border-left: 4px solid #10b981;
+        padding-left: 1rem;
+      }
+
+      .current-lecture.active .lecture-name {
+        font-weight: bold;
+        color: #059669;
+      }
+
+      body.dark .current-lecture.active .lecture-name {
+        color: #34d399;
+      }
+
+      .current-lecture.active .lecture-details {
+        font-size: 0.875rem;
+        color: #6b7280;
+      }
+
+      body.dark .current-lecture.active .lecture-details {
+        color: #9ca3af;
+      }
+
+      /* Day Selector */
+      .day-selector {
+        display: flex;
+        justify-content: space-between;
+        gap: 0.5rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .day-button {
+        flex: 1;
+        padding: 0.5rem 1rem;
+        border: none;
+        border-radius: 0.5rem;
+        background-color: #e5e7eb;
+        color: #374151;
+        cursor: pointer;
+        font-size: 0.875rem;
+        font-weight: 500;
+        transition: all 0.3s ease;
+      }
+
+      .day-button:hover {
+        background-color: #d1d5db;
+      }
+
+      body.dark .day-button {
+        background-color: #374151;
+        color: #d1d5db;
+      }
+
+      body.dark .day-button:hover {
+        background-color: #4b5563;
+      }
+
+      .day-button.active {
+        background-color: #10b981;
+        color: #ffffff;
+      }
+
+      .day-button.active:hover {
+        background-color: #059669;
+      }
+
+      /* Schedule */
+      .schedule-item {
+        border-left: 4px solid #10b981;
+        padding-left: 1rem;
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+        margin-bottom: 1rem;
+      }
+
+      .schedule-item:last-child {
+        margin-bottom: 0;
+      }
+
+      .schedule-item .lecture-name {
+        font-weight: bold;
+        margin-bottom: 0.25rem;
+      }
+
+      .schedule-item .lecture-details {
+        font-size: 0.875rem;
+        color: #6b7280;
+      }
+
+      body.dark .schedule-item .lecture-details {
+        color: #9ca3af;
+      }
+
+      .no-classes {
+        color: #6b7280;
+        font-style: italic;
+      }
+
+      body.dark .no-classes {
+        color: #9ca3af;
+      }
+
+      /* Footer */
+      .footer {
+        text-align: center;
+        padding: 1.5rem 0;
+        color: #6b7280;
+        margin-top: 2rem;
+      }
+
+      body.dark .footer {
+        color: #9ca3af;
+      }
+
+      .footer a {
+        color: #10b981;
+        text-decoration: none;
+        transition: color 0.3s ease;
+      }
+
+      .footer a:hover {
+        text-decoration: underline;
+      }
+
+      body.dark .footer a {
+        color: #34d399;
+      }
+
+      .footer-actions {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+        margin-bottom: 1rem;
+      }
+
+      @media (min-width: 640px) {
+        .footer-actions {
+          flex-direction: row;
+        }
+      }
+
+      .github-button {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.5rem 1rem;
+        background-color: #1f2937;
+        color: #ffffff;
+        font-size: 0.875rem;
+        font-weight: 500;
+        border-radius: 0.5rem;
+        text-decoration: none;
+        transition: background-color 0.3s ease;
+      }
+
+      .github-button:hover {
+        background-color: #374151;
+      }
+
+      body.dark .github-button {
+        background-color: #374151;
+      }
+
+      body.dark .github-button:hover {
+        background-color: #4b5563;
+      }
+
+      .github-button svg {
+        width: 1rem;
+        height: 1rem;
+        margin-right: 0.5rem;
+      }
+
+      .footer-note {
+        font-size: 0.75rem;
+        color: #6b7280;
+      }
+
+      body.dark .footer-note {
+        color: #9ca3af;
+      }
+
+      .footer-note a {
+        color: #2563eb;
+      }
+
+      body.dark .footer-note a {
+        color: #60a5fa;
+      }
+
+      /* Responsive adjustments */
+      @media (max-width: 640px) {
+        .container {
+          padding: 1rem 0.5rem;
+        }
+
+        .day-selector {
+          gap: 0.25rem;
+        }
+
+        .day-button {
+          padding: 0.5rem 0.5rem;
+          font-size: 0.75rem;
+        }
+      }
+    </style>
   </head>
-  <body
-    class="bg-gray-100 dark:bg-gray-900 min-h-screen text-gray-900 dark:text-white"
-  >
-    <div class="container mx-auto px-4 py-6">
+  <body>
+    <div class="container">
       <!-- Header -->
-      <div class="flex justify-between items-center mb-6">
-        <div id="clock" class="text-xl font-mono"></div>
-        <button
-          id="theme-toggle"
-          class="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600"
-        >
-          🌙
-        </button>
+      <div class="header">
+        <div id="clock" class="clock"></div>
+        <button id="theme-toggle" class="theme-toggle">🌙</button>
       </div>
 
       <!-- Current Lecture -->
-      <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 mb-6">
-        <h2 class="text-lg font-semibold mb-3">Current Lecture</h2>
-        <div id="current-lecture">
-          <p class="text-gray-500 dark:text-gray-400">No current lecture</p>
+      <div class="card">
+        <h2 class="card-title">Current Lecture</h2>
+        <div id="current-lecture" class="current-lecture">
+          <p>No current lecture</p>
         </div>
       </div>
 
       <!-- Day Selector -->
-      <div class="flex justify-between mb-6" id="day-selector">
-        <button class="py-2 px-4 rounded-lg" data-day="Monday">Mon</button>
-        <button class="py-2 px-4 rounded-lg" data-day="Tuesday">Tue</button>
-        <button class="py-2 px-4 rounded-lg" data-day="Wednesday">Wed</button>
-        <button class="py-2 px-4 rounded-lg" data-day="Thursday">Thu</button>
-        <button class="py-2 px-4 rounded-lg" data-day="Friday">Fri</button>
+      <div class="day-selector" id="day-selector">
+        <button class="day-button" data-day="Monday">Mon</button>
+        <button class="day-button" data-day="Tuesday">Tue</button>
+        <button class="day-button" data-day="Wednesday">Wed</button>
+        <button class="day-button" data-day="Thursday">Thu</button>
+        <button class="day-button" data-day="Friday">Fri</button>
       </div>
 
       <!-- Schedule -->
-      <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4">
-        <h3 class="text-lg font-semibold mb-4" id="schedule-title">
-          Today's Schedule
-        </h3>
+      <div class="card">
+        <h3 class="card-title" id="schedule-title">Today's Schedule</h3>
         <div id="schedule-content">
-          <p class="text-gray-500 dark:text-gray-400">Loading...</p>
+          <p class="no-classes">Loading...</p>
         </div>
       </div>
     </div>
 
     <!-- Footer -->
-    <footer class="text-center py-6 text-gray-600 dark:text-gray-400">
-      <p class="mb-4">
+    <footer class="footer">
+      <p style="margin-bottom: 1rem">
         Made by
-        <a
-          href="https://github.com/aryamaddel"
-          class="text-green-600 dark:text-green-400 hover:underline"
-          >Arya Maddel</a
-        >
+        <a href="https://github.com/aryamaddel">Arya Maddel</a>
         💚
       </p>
-      <div
-        class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-4"
-      >
+      <div class="footer-actions">
         <a
           href="https://github.com/aryamaddel/college-time-table"
-          class="inline-flex items-center px-4 py-2 bg-gray-800 dark:bg-gray-700 text-white text-sm font-medium rounded-lg hover:bg-gray-700 dark:hover:bg-gray-600 transition-colors"
+          class="github-button"
         >
-          <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+          <svg fill="currentColor" viewBox="0 0 20 20">
             <path
               fill-rule="evenodd"
               d="M10 0C4.477 0 0 4.484 0 10.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0110 4.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.203 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.942.359.31.678.921.678 1.856 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0020 10.017C20 4.484 15.522 0 10 0z"
@@ -81,11 +360,9 @@
           </svg>
           View on GitHub
         </a>
-        <p class="text-xs text-gray-500">
+        <p class="footer-note">
           Found an error?
-          <a
-            href="https://github.com/aryamaddel/college-time-table/pulls"
-            class="text-blue-600 dark:text-blue-400 hover:underline"
+          <a href="https://github.com/aryamaddel/college-time-table/pulls"
             >Create a PR</a
           >
           to change it.
@@ -279,22 +556,17 @@
         const container = document.getElementById("current-lecture");
 
         if (lecture) {
+          container.className = "current-lecture active";
           container.innerHTML = `
-                    <div class="border-l-4 border-green-500 pl-4">
-                        <p class="font-bold text-green-600 dark:text-green-400">${
-                          lecture.lecture
-                        }</p>
-                        <p class="text-sm text-gray-600 dark:text-gray-400">${formatTime(
-                          lecture.start_time
-                        )} - ${formatTime(lecture.end_time)}</p>
-                        <p class="text-sm text-gray-600 dark:text-gray-400">Room: ${
-                          lecture.room
-                        }</p>
-                    </div>
-                `;
+            <p class="lecture-name">${lecture.lecture}</p>
+            <p class="lecture-details">${formatTime(
+              lecture.start_time
+            )} - ${formatTime(lecture.end_time)}</p>
+            <p class="lecture-details">Room: ${lecture.room}</p>
+          `;
         } else {
-          container.innerHTML =
-            '<p class="text-gray-500 dark:text-gray-400">No current lecture</p>';
+          container.className = "current-lecture";
+          container.innerHTML = "<p>No current lecture</p>";
         }
       }
 
@@ -302,11 +574,9 @@
         currentDay = day;
 
         document.querySelectorAll("#day-selector button").forEach((btn) => {
+          btn.classList.remove("active");
           if (btn.dataset.day === day) {
-            btn.className = "py-2 px-4 rounded-lg bg-green-500 text-white";
-          } else {
-            btn.className =
-              "py-2 px-4 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300";
+            btn.classList.add("active");
           }
         });
 
@@ -324,27 +594,24 @@
           container.innerHTML = schedule
             .map(
               (lecture) => `
-                    <div class="border-l-4 border-green-500 pl-4 py-2 mb-4">
-                        <p class="font-bold">${lecture.lecture}</p>
-                        <p class="text-sm text-gray-600 dark:text-gray-400">${formatTime(
-                          lecture.start_time
-                        )} - ${formatTime(lecture.end_time)}</p>
-                        <p class="text-sm text-gray-600 dark:text-gray-400">Room: ${
-                          lecture.room
-                        }</p>
-                    </div>
-                `
+                <div class="schedule-item">
+                  <p class="lecture-name">${lecture.lecture}</p>
+                  <p class="lecture-details">${formatTime(
+                    lecture.start_time
+                  )} - ${formatTime(lecture.end_time)}</p>
+                  <p class="lecture-details">Room: ${lecture.room}</p>
+                </div>
+              `
             )
             .join("");
         } else {
-          container.innerHTML =
-            '<p class="text-gray-500 dark:text-gray-400">No classes today</p>';
+          container.innerHTML = '<p class="no-classes">No classes today</p>';
         }
       }
 
       function toggleTheme() {
-        document.documentElement.classList.toggle("dark");
-        const isDark = document.documentElement.classList.contains("dark");
+        document.body.classList.toggle("dark");
+        const isDark = document.body.classList.contains("dark");
         document.getElementById("theme-toggle").textContent = isDark
           ? "☀️"
           : "🌙";
