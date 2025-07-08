@@ -1,293 +1,372 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Mobile Timetable</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-      /* Loading Animation Styles */
-      .loading-dots {
-        display: flex;
-        gap: 4px;
-      }
-
-      .loading-dot {
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        background-color: #10b981;
-        animation: loading-bounce 1.2s infinite ease-in-out;
-      }
-
-      .loading-dot:nth-child(1) {
-        animation-delay: -0.32s;
-      }
-      .loading-dot:nth-child(2) {
-        animation-delay: -0.16s;
-      }
-      .loading-dot:nth-child(3) {
-        animation-delay: 0s;
-      }
-
-      @keyframes loading-bounce {
-        0%,
-        80%,
-        100% {
-          transform: scale(0);
-          opacity: 0.5;
-        }
-        40% {
-          transform: scale(1);
-          opacity: 1;
-        }
-      }
-
-      .loading-pulse {
-        animation: pulse 1.5s ease-in-out infinite;
-      }
-
-      @keyframes pulse {
-        0%,
-        100% {
-          opacity: 0.4;
-        }
-        50% {
-          opacity: 1;
-        }
-      }
-
-      /* Content Visibility Styles */
-      .content-hidden {
-        opacity: 0;
-        visibility: hidden;
-      }
-
-      .content-visible {
-        opacity: 1;
-        visibility: visible;
-        transition: opacity 0.3s ease-in-out;
-      }
-
-      .loading-fade-out {
-        transition: opacity 0.2s ease-out;
-      }
-
-      /* Dark Mode Configuration */
-      :root {
-        --tw-dark-selector: .dark;
-      }
-
-      /* Custom Component Styles */
-      .day-button-selected {
-        background-color: #10b981;
-        color: white;
-      }
-
-      .dark .day-button-selected {
-        background-color: #059669;
-      }
-
-      .day-button-unselected {
-        background-color: #e5e7eb;
-        color: #374151;
-      }
-
-      .dark .day-button-unselected {
-        background-color: #374151;
-        color: #d1d5db;
-      }
-
-      .lecture-item {
-        border-left: 4px solid #10b981;
-        padding-left: 1rem;
-        padding-top: 0.5rem;
-        padding-bottom: 0.5rem;
-      }
-
-      .current-lecture-ring {
-        box-shadow: 0 0 0 1px #10b981;
-        background-color: #f0fdf4;
-      }
-
-      .dark .current-lecture-ring {
-        background-color: rgba(5, 150, 105, 0.3);
-      }
-    </style>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+      };
+    </script>
   </head>
   <body
-    class="bg-gray-100 dark:bg-gray-900 min-h-screen text-gray-900 dark:text-white transition-colors duration-300"
+    class="bg-gray-100 dark:bg-gray-900 min-h-screen text-gray-900 dark:text-white"
   >
-    <!-- Loading Screen -->
-    <div
-      id="loading-screen"
-      class="fixed inset-0 bg-gray-100 dark:bg-gray-900 flex items-center justify-center z-50"
-    >
-      <div class="text-center">
-        <div class="flex justify-center mb-6">
-          <div class="loading-dots">
-            <div class="loading-dot"></div>
-            <div class="loading-dot"></div>
-            <div class="loading-dot"></div>
-          </div>
-        </div>
-        <h2
-          class="text-xl font-semibold text-gray-900 dark:text-white mb-2 loading-pulse"
+    <div class="container mx-auto px-4 py-6">
+      <!-- Header -->
+      <div class="flex justify-between items-center mb-6">
+        <div id="clock" class="text-xl font-mono"></div>
+        <button
+          id="theme-toggle"
+          class="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600"
         >
-          Loading Timetable
-        </h2>
-        <p class="text-gray-600 dark:text-gray-400 loading-pulse">
-          Preparing your schedule...
-        </p>
+          🌙
+        </button>
+      </div>
+
+      <!-- Current Lecture -->
+      <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 mb-6">
+        <h2 class="text-lg font-semibold mb-3">Current Lecture</h2>
+        <div id="current-lecture">
+          <p class="text-gray-500 dark:text-gray-400">No current lecture</p>
+        </div>
+      </div>
+
+      <!-- Day Selector -->
+      <div class="flex justify-between mb-6" id="day-selector">
+        <button class="py-2 px-4 rounded-lg" data-day="Monday">Mon</button>
+        <button class="py-2 px-4 rounded-lg" data-day="Tuesday">Tue</button>
+        <button class="py-2 px-4 rounded-lg" data-day="Wednesday">Wed</button>
+        <button class="py-2 px-4 rounded-lg" data-day="Thursday">Thu</button>
+        <button class="py-2 px-4 rounded-lg" data-day="Friday">Fri</button>
+      </div>
+
+      <!-- Schedule -->
+      <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4">
+        <h3 class="text-lg font-semibold mb-4" id="schedule-title">
+          Today's Schedule
+        </h3>
+        <div id="schedule-content">
+          <p class="text-gray-500 dark:text-gray-400">Loading...</p>
+        </div>
       </div>
     </div>
 
-    <!-- Main Content -->
-    <div id="main-content" class="content-hidden">
-      <main class="container mx-auto px-4 py-6">
-        <div class="flex justify-between items-center mb-6">
-          <time
-            id="clock"
-            class="text-lg md:text-xl text-gray-900 dark:text-gray-100"
-          ></time>
-          <button
-            id="theme-toggle"
-            class="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
-            aria-label="Toggle theme"
-          >
-            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-              <path
-                id="icon-path"
-                d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"
-              ></path>
-            </svg>
-          </button>
-        </div>
-        <section
-          id="current-lecture"
-          class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 mb-6 ring-1 ring-green-500 bg-green-50 dark:bg-green-900/30"
+    <!-- Footer -->
+    <footer class="text-center py-6 text-gray-600 dark:text-gray-400">
+      <p class="mb-4">
+        Made by
+        <a
+          href="https://github.com/aryamaddel"
+          class="text-green-600 dark:text-green-400 hover:underline"
+          >Arya Maddel</a
         >
-          <h2
-            class="text-lg md:text-xl font-semibold mb-2 text-gray-900 dark:text-gray-100"
-            id="current-lecture-title"
-          >
-            No Current Lecture
-          </h2>
-          <div id="lecture-info" class="hidden">
-            <p
-              class="text-base md:text-lg font-bold text-green-600 dark:text-green-400"
-              id="lecture-name"
-            ></p>
-            <p
-              class="text-sm md:text-base text-gray-700 dark:text-gray-300"
-              id="lecture-time"
-            ></p>
-            <p
-              class="text-sm md:text-base text-gray-700 dark:text-gray-300"
-              id="lecture-room"
-            ></p>
-            <div
-              class="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2.5 mt-4"
-            >
-              <div
-                id="progress-bar"
-                class="bg-green-600 dark:bg-green-500 h-2.5 rounded-full"
-                style="width: 0%"
-              ></div>
-            </div>
-          </div>
-          <p
-            id="no-lecture-message"
-            class="text-sm md:text-base text-gray-500 dark:text-gray-400"
-          >
-            Enjoy your break!
-          </p>
-        </section>
-
-        <nav id="day-selector" class="flex justify-between mb-6">
-          <button
-            class="py-2 px-4 rounded-lg focus:outline-none"
-            data-day="Monday"
-          >
-            Mon
-          </button>
-          <button
-            class="py-2 px-4 rounded-lg focus:outline-none"
-            data-day="Tuesday"
-          >
-            Tue
-          </button>
-          <button
-            class="py-2 px-4 rounded-lg focus:outline-none"
-            data-day="Wednesday"
-          >
-            Wed
-          </button>
-          <button
-            class="py-2 px-4 rounded-lg focus:outline-none"
-            data-day="Thursday"
-          >
-            Thu
-          </button>
-          <button
-            class="py-2 px-4 rounded-lg focus:outline-none"
-            data-day="Friday"
-          >
-            Fri
-          </button>
-        </nav>
-
-        <section
-          id="full-timetable"
-          class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4"
+        💚
+      </p>
+      <div
+        class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-4"
+      >
+        <a
+          href="https://github.com/aryamaddel/college-time-table"
+          class="inline-flex items-center px-4 py-2 bg-gray-800 dark:bg-gray-700 text-white text-sm font-medium rounded-lg hover:bg-gray-700 dark:hover:bg-gray-600 transition-colors"
         >
-          <h3
-            class="text-base md:text-lg font-semibold mb-4 text-gray-900 dark:text-gray-100"
-            id="schedule-title"
-          >
-            Schedule
-          </h3>
-          <div id="schedule-content">
-            <p class="text-sm md:text-base text-gray-500 dark:text-gray-400">
-              Loading schedule...
-            </p>
-          </div>
-        </section>
-      </main>
-
-      <footer class="text-center py-6 text-gray-600 dark:text-gray-400">
-        <p class="mb-4 text-sm md:text-base">
-          Made by
+          <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M10 0C4.477 0 0 4.484 0 10.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0110 4.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.203 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.942.359.31.678.921.678 1.856 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0020 10.017C20 4.484 15.522 0 10 0z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+          View on GitHub
+        </a>
+        <p class="text-xs text-gray-500">
+          Found an error?
           <a
-            href="https://github.com/aryamaddel"
-            class="text-green-600 dark:text-green-400 hover:underline"
-            >Arya Maddel</a
+            href="https://github.com/aryamaddel/college-time-table/pulls"
+            class="text-blue-600 dark:text-blue-400 hover:underline"
+            >Create a PR</a
           >
-          💚
+          to change it.
         </p>
-        <div
-          class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-4"
-        >
-          <a
-            href="https://github.com/aryamaddel/college-time-table"
-            class="inline-flex items-center px-4 py-2 bg-gray-800 dark:bg-gray-700 text-white text-sm font-medium rounded-lg hover:bg-gray-700 dark:hover:bg-gray-600 transition-colors"
-          >
-            <!-- ...existing SVG... -->
-            View on GitHub
-          </a>
-          <p class="text-xs text-gray-500">
-            Found an error?
-            <a
-              href="https://github.com/aryamaddel/college-time-table/pulls"
-              class="text-blue-600 dark:text-blue-400 hover:underline"
-              >Create a PR</a
-            >
-            to change it.
-          </p>
-        </div>
-      </footer>
-    </div>
+      </div>
+    </footer>
 
-    <script src="script.js"></script>
+    <script>
+      const timetable = {
+        Monday: [
+          { start_time: "08:30", end_time: "9:30", lecture: "WT", room: "305" },
+          {
+            start_time: "9:30",
+            end_time: "10:30",
+            lecture: "DIP",
+            room: "310",
+          },
+          {
+            start_time: "10:40",
+            end_time: "12:40",
+            lecture: "DIP Lab",
+            room: "PrL",
+          },
+          {
+            start_time: "11:40",
+            end_time: "12:40",
+            lecture: "OP",
+            room: "311",
+          },
+          {
+            start_time: "13:30",
+            end_time: "14:30",
+            lecture: "CN",
+            room: "311",
+          },
+          {
+            start_time: "14:30",
+            end_time: "15:30",
+            lecture: "DAA",
+            room: "311",
+          },
+        ],
+        Tuesday: [
+          { start_time: "8:30", end_time: "9:30", lecture: "DIP", room: "310" },
+          {
+            start_time: "9:30",
+            end_time: "10:30",
+            lecture: "IOT",
+            room: "305",
+          },
+          {
+            start_time: "10:40",
+            end_time: "11:40",
+            lecture: "DAA",
+            room: "310",
+          },
+          {
+            start_time: "11:40",
+            end_time: "12:40",
+            lecture: "OS",
+            room: "310",
+          },
+          {
+            start_time: "15:30",
+            end_time: "17:30",
+            lecture: "IOT Lab",
+            room: "IOTL",
+          },
+        ],
+        Wednesday: [
+          { start_time: "8:30", end_time: "9:30", lecture: "WT", room: "311" },
+          { start_time: "9:30", end_time: "10:30", lecture: "CN", room: "311" },
+          {
+            start_time: "10:40",
+            end_time: "11:40",
+            lecture: "AI",
+            room: "311",
+          },
+          {
+            start_time: "13:30",
+            end_time: "15:30",
+            lecture: "CN Lab",
+            room: "301",
+          },
+          {
+            start_time: "15:30",
+            end_time: "17:30",
+            lecture: "WT Lab",
+            room: "SL",
+          },
+        ],
+        Thursday: [
+          { start_time: "8:30", end_time: "9:30", lecture: "TNP", room: "311" },
+          { start_time: "9:30", end_time: "10:30", lecture: "AI", room: "311" },
+          {
+            start_time: "10:40",
+            end_time: "11:40",
+            lecture: "WT Lab",
+            room: "SL",
+          },
+          {
+            start_time: "11:40",
+            end_time: "12:40",
+            lecture: "OP Tutorial",
+            room: "311",
+          },
+          {
+            start_time: "13:30",
+            end_time: "15:30",
+            lecture: "AI Lab",
+            room: "IOTL",
+          },
+          {
+            start_time: "15:30",
+            end_time: "17:30",
+            lecture: "DAA Lab",
+            room: "IOTL",
+          },
+        ],
+        Friday: [
+          { start_time: "8:30", end_time: "9:30", lecture: "OS", room: "311" },
+          {
+            start_time: "9:30",
+            end_time: "10:30",
+            lecture: "OP Tutorial",
+            room: "311",
+          },
+          {
+            start_time: "10:40",
+            end_time: "11:40",
+            lecture: "TNP",
+            room: "Sports",
+          },
+          {
+            start_time: "13:30",
+            end_time: "15:30",
+            lecture: "WT Lab",
+            room: "SL",
+          },
+          {
+            start_time: "15:30",
+            end_time: "17:30",
+            lecture: "CN Lab",
+            room: "301",
+          },
+        ],
+      };
+
+      const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+      let currentDay = "";
+
+      function getCurrentDay() {
+        const day = new Date().getDay() - 1;
+        return day >= 0 && day < days.length ? days[day] : days[0];
+      }
+
+      function formatTime(time) {
+        const [hour, minute] = time.split(":").map(Number);
+        return `${hour % 12 || 12}:${minute.toString().padStart(2, "0")} ${
+          hour >= 12 ? "PM" : "AM"
+        }`;
+      }
+
+      function getCurrentLecture() {
+        const now = new Date();
+        const day = getCurrentDay();
+        const currentMinutes = now.getHours() * 60 + now.getMinutes();
+
+        return timetable[day]?.find((lecture) => {
+          const [startHour, startMinute] = lecture.start_time
+            .split(":")
+            .map(Number);
+          const [endHour, endMinute] = lecture.end_time.split(":").map(Number);
+          const startMinutes = startHour * 60 + startMinute;
+          const endMinutes = endHour * 60 + endMinute;
+          return currentMinutes >= startMinutes && currentMinutes <= endMinutes;
+        });
+      }
+
+      function updateClock() {
+        document.getElementById("clock").textContent =
+          new Date().toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+          });
+      }
+
+      function updateCurrentLecture() {
+        const lecture = getCurrentLecture();
+        const container = document.getElementById("current-lecture");
+
+        if (lecture) {
+          container.innerHTML = `
+                    <div class="border-l-4 border-green-500 pl-4">
+                        <p class="font-bold text-green-600 dark:text-green-400">${
+                          lecture.lecture
+                        }</p>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">${formatTime(
+                          lecture.start_time
+                        )} - ${formatTime(lecture.end_time)}</p>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">Room: ${
+                          lecture.room
+                        }</p>
+                    </div>
+                `;
+        } else {
+          container.innerHTML =
+            '<p class="text-gray-500 dark:text-gray-400">No current lecture</p>';
+        }
+      }
+
+      function selectDay(day) {
+        currentDay = day;
+
+        document.querySelectorAll("#day-selector button").forEach((btn) => {
+          if (btn.dataset.day === day) {
+            btn.className = "py-2 px-4 rounded-lg bg-green-500 text-white";
+          } else {
+            btn.className =
+              "py-2 px-4 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300";
+          }
+        });
+
+        displaySchedule();
+      }
+
+      function displaySchedule() {
+        const schedule = timetable[currentDay];
+        const container = document.getElementById("schedule-content");
+        const title = document.getElementById("schedule-title");
+
+        title.textContent = `${currentDay}'s Schedule`;
+
+        if (schedule?.length) {
+          container.innerHTML = schedule
+            .map(
+              (lecture) => `
+                    <div class="border-l-4 border-green-500 pl-4 py-2 mb-4">
+                        <p class="font-bold">${lecture.lecture}</p>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">${formatTime(
+                          lecture.start_time
+                        )} - ${formatTime(lecture.end_time)}</p>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">Room: ${
+                          lecture.room
+                        }</p>
+                    </div>
+                `
+            )
+            .join("");
+        } else {
+          container.innerHTML =
+            '<p class="text-gray-500 dark:text-gray-400">No classes today</p>';
+        }
+      }
+
+      function toggleTheme() {
+        document.documentElement.classList.toggle("dark");
+        const isDark = document.documentElement.classList.contains("dark");
+        document.getElementById("theme-toggle").textContent = isDark
+          ? "☀️"
+          : "🌙";
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        document.querySelectorAll("#day-selector button").forEach((btn) => {
+          btn.addEventListener("click", () => selectDay(btn.dataset.day));
+        });
+
+        document
+          .getElementById("theme-toggle")
+          .addEventListener("click", toggleTheme);
+
+        selectDay(getCurrentDay());
+
+        updateClock();
+        updateCurrentLecture();
+        setInterval(() => {
+          updateClock();
+          updateCurrentLecture();
+        }, 1000);
+      });
+    </script>
   </body>
 </html>
