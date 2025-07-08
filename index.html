@@ -18,12 +18,19 @@
       <!-- Header -->
       <div class="flex justify-between items-center mb-6">
         <div id="clock" class="text-xl font-mono"></div>
-        <button
-          id="theme-toggle"
-          class="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600"
-        >
-          🌙
-        </button>
+        <div class="flex items-center gap-2">
+          <div id="offline-indicator" class="hidden">
+            <span class="px-2 py-1 text-xs bg-red-500 text-white rounded"
+              >Offline</span
+            >
+          </div>
+          <button
+            id="theme-toggle"
+            class="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600"
+          >
+            🌙
+          </button>
+        </div>
       </div>
 
       <!-- Current Lecture -->
@@ -349,7 +356,28 @@
           : "🌙";
       }
 
+      function updateOfflineStatus() {
+        const indicator = document.getElementById("offline-indicator");
+        if (navigator.onLine) {
+          indicator.classList.add("hidden");
+        } else {
+          indicator.classList.remove("hidden");
+        }
+      }
+
       document.addEventListener("DOMContentLoaded", () => {
+        // Register service worker
+        if ("serviceWorker" in navigator) {
+          navigator.serviceWorker
+            .register("/sw.js")
+            .then((registration) => {
+              console.log("SW registered: ", registration);
+            })
+            .catch((registrationError) => {
+              console.log("SW registration failed: ", registrationError);
+            });
+        }
+
         document.querySelectorAll("#day-selector button").forEach((btn) => {
           btn.addEventListener("click", () => selectDay(btn.dataset.day));
         });
@@ -357,6 +385,11 @@
         document
           .getElementById("theme-toggle")
           .addEventListener("click", toggleTheme);
+
+        // Monitor online/offline status
+        window.addEventListener("online", updateOfflineStatus);
+        window.addEventListener("offline", updateOfflineStatus);
+        updateOfflineStatus();
 
         selectDay(getCurrentDay());
 
