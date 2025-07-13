@@ -373,125 +373,195 @@
     <script>
       const timetable = {
         Monday: [
-          { start_time: "08:30", end_time: "9:30", lecture: "WT", room: "305" },
           {
-            start_time: "9:30",
-            end_time: "10:30",
-            lecture: "DIP",
+            time: "08:30-09:30",
+            subject_code: "WT",
+            subject_name: "Web Technology",
+            faculty: "RC",
+            room: "305",
+            type: "Lecture",
+          },
+          {
+            time: "09:30-10:30",
+            subject_code: "DIP",
+            subject_name: "Digital Image Processing",
+            faculty: "SJ",
             room: "310",
+            type: "Lecture",
           },
           {
-            start_time: "10:40",
-            end_time: "12:40",
-            lecture: "DIP Lab",
-            room: "PrL",
+            time: "10:40-12:40",
+            subject_code: "DIP",
+            subject_name: "Digital Image Processing",
+            faculty: "SJ",
+            room: "PrL Lab",
+            type: "Lab",
           },
           {
-            start_time: "11:40",
-            end_time: "12:40",
-            lecture: "OP",
+            time: "13:30-14:30",
+            subject_code: "OP",
+            subject_name: "Organizational Psychology",
+            faculty: "AK",
             room: "311",
+            type: "Lecture",
           },
           {
-            start_time: "13:30",
-            end_time: "14:30",
-            lecture: "CN",
+            time: "14:30-15:30",
+            subject_code: "CN",
+            subject_name: "Computer Networks",
+            faculty: "LK",
             room: "311",
+            type: "Lecture",
           },
           {
-            start_time: "14:30",
-            end_time: "15:30",
-            lecture: "DAA",
+            time: "15:30-16:30",
+            subject_code: "DAA",
+            subject_name: "Design and Analysis of Algorithms",
+            faculty: "SM",
             room: "311",
+            type: "Lecture",
           },
         ],
         Tuesday: [
           {
-            start_time: "8:30",
-            end_time: "10:30",
-            lecture: "DAA",
-            room: "PrL Lab",
+            time: "08:30-10:30",
+            subject_code: "DAA",
+            subject_name: "Design and Analysis of Algorithms",
+            faculty: "SM",
+            room: "302",
+            type: "Lecture",
           },
           {
-            start_time: "10:40",
-            end_time: "11:40",
-            lecture: "DIP",
+            time: "10:40-11:40",
+            subject_code: "DAA",
+            subject_name: "Design and Analysis of Algorithms",
+            faculty: "SM",
             room: "310",
+            type: "Lecture",
           },
           {
-            start_time: "11:40",
-            end_time: "12:40",
-            lecture: "DAA",
+            time: "11:40-12:40",
+            subject_code: "DIP",
+            subject_name: "Digital Image Processing",
+            faculty: "SJ",
             room: "310",
+            type: "Lecture",
           },
           {
-            start_time: "13:30",
-            end_time: "15:30",
-            lecture: "WT",
-            room: "SL Lab",
+            time: "13:30-15:30",
+            subject_code: "WT",
+            subject_name: "Web Technology",
+            faculty: "RC",
+            room: "SL",
+            type: "Lab",
           },
           {
-            start_time: "13:30",
-            end_time: "16:30",
-            lecture: "OS",
+            time: "15:30-16:30",
+            subject_code: "OS 310",
+            subject_name: "Operating System",
+            faculty: "PAK",
             room: "310",
+            type: "Lecture",
           },
         ],
         Wednesday: [
           {
-            start_time: "8:30",
-            end_time: "10:30",
-            lecture: "DIP",
-            room: "Pr Lab",
+            time: "08:30-10:30",
+            subject_code: "DIP",
+            subject_name: "Digital Image Processing",
+            faculty: "SJ",
+            type: "Lab",
           },
           {
-            start_time: "10:40",
-            end_time: "12:40",
-            lecture: "AI",
-            room: "IOT Lab",
+            time: "10:40-12:40",
+            subject_code: "WT",
+            subject_name: "Web Technology",
+            faculty: "RC",
+            room: "SL",
+            type: "Lab",
           },
           {
-            start_time: "13:30",
-            end_time: "14:30",
-            lecture: "WT",
+            time: "13:30-14:30",
+            subject_code: "CN",
+            subject_name: "Computer Networks",
+            faculty: "LK",
             room: "311",
+            type: "Lecture",
           },
           {
-            start_time: "14:30",
-            end_time: "15:30",
-            lecture: "CN",
+            time: "14:30-15:30",
+            subject_code: "AI",
+            subject_name: "Artificial Intelligence",
+            faculty: "VHK",
             room: "311",
+            type: "Lecture",
           },
           {
-            start_time: "15:30",
-            end_time: "16:30",
-            lecture: "AI",
+            time: "15:30-16:30",
+            subject_code: "TNP",
+            subject_name: "Training & Placement",
             room: "311",
+            type: "Other",
           },
         ],
         Thursday: [
-          { start_time: "8:30", end_time: "9:30", lecture: "TNP", room: "311" },
-          { start_time: "9:30", end_time: "10:30", lecture: "AI", room: "311" },
           {
-            start_time: "10:40",
-            end_time: "11:40",
-            lecture: "WT Lab",
-            room: "SL",
+            time: "08:30-09:30",
+            subject_code: "OP Tut",
+            subject_name: "Organizational Psychology",
+            faculty: "AK",
+            room: "311",
+            type: "Tutorial",
           },
           {
-            start_time: "11:40",
-            end_time: "12:40",
-            lecture: "OP Tutorial",
+            time: "09:30-10:30",
+            subject_code: "WT",
+            subject_name: "Web Technology",
+            faculty: "RC",
             room: "311",
+            type: "Lecture",
+          },
+          {
+            time: "10:40-12:40",
+            subject_code: "WT",
+            subject_name: "Web Technology",
+            faculty: "RC",
+            room: "SL",
+            type: "Lab",
+          },
+          {
+            time: "13:30-14:30",
+            subject_code: "AI",
+            subject_name: "Artificial Intelligence",
+            faculty: "VHK",
+            room: "311",
+            type: "Lecture",
+          },
+          {
+            time: "14:30-16:30",
+            subject_code: "OS",
+            subject_name: "Operating System",
+            faculty: "WR",
+            room: "NL1",
+            type: "Lab",
           },
         ],
         Friday: [
-          { start_time: "8:30", end_time: "10:30", lecture: "CN", room: "301" },
           {
-            start_time: "10:40",
-            end_time: "11:40",
-            lecture: "OS",
+            time: "08:30-10:30",
+            subject_code: "CN",
+            subject_name: "Computer Networks",
+            faculty: "LK",
+            room: "301",
+            type: "Lab",
+          },
+          {
+            time: "10:40-11:40",
+            subject_code: "OS",
+            subject_name: "Operating System",
+            faculty: "PAK",
             room: "311",
+            type: "Lecture",
           },
         ],
       };
@@ -502,6 +572,11 @@
       function getCurrentDay() {
         const day = new Date().getDay() - 1;
         return day >= 0 && day < days.length ? days[day] : days[0];
+      }
+
+      function parseTime(timeStr) {
+        const [startTime, endTime] = timeStr.split("-");
+        return { start: startTime, end: endTime };
       }
 
       function formatTime(time) {
@@ -517,10 +592,9 @@
         const currentMinutes = now.getHours() * 60 + now.getMinutes();
 
         return timetable[day]?.find((lecture) => {
-          const [startHour, startMinute] = lecture.start_time
-            .split(":")
-            .map(Number);
-          const [endHour, endMinute] = lecture.end_time.split(":").map(Number);
+          const { start, end } = parseTime(lecture.time);
+          const [startHour, startMinute] = start.split(":").map(Number);
+          const [endHour, endMinute] = end.split(":").map(Number);
           const startMinutes = startHour * 60 + startMinute;
           const endMinutes = endHour * 60 + endMinute;
           return currentMinutes >= startMinutes && currentMinutes <= endMinutes;
@@ -541,13 +615,25 @@
         const container = document.getElementById("current-lecture");
 
         if (lecture) {
+          const { start, end } = parseTime(lecture.time);
+          const faculty = Array.isArray(lecture.faculty)
+            ? lecture.faculty.join(", ")
+            : lecture.faculty;
+          const room = lecture.room
+            ? Array.isArray(lecture.room)
+              ? lecture.room.join("/")
+              : lecture.room
+            : "";
+
           container.className = "current-lecture active";
           container.innerHTML = `
-            <p class="lecture-name">${lecture.lecture}</p>
-            <p class="lecture-details">${formatTime(
-              lecture.start_time
-            )} - ${formatTime(lecture.end_time)}</p>
-            <p class="lecture-details">Room: ${lecture.room}</p>
+            <p class="lecture-name">${lecture.subject_name}</p>
+            <p class="lecture-details">${formatTime(start)} - ${formatTime(
+            end
+          )}</p>
+            <p class="lecture-details">Faculty: ${faculty}</p>
+            ${room ? `<p class="lecture-details">Room: ${room}</p>` : ""}
+            <p class="lecture-details">Type: ${lecture.type}</p>
           `;
         } else {
           container.className = "current-lecture";
@@ -577,17 +663,29 @@
 
         if (schedule?.length) {
           container.innerHTML = schedule
-            .map(
-              (lecture) => `
+            .map((lecture) => {
+              const { start, end } = parseTime(lecture.time);
+              const faculty = Array.isArray(lecture.faculty)
+                ? lecture.faculty.join(", ")
+                : lecture.faculty;
+              const room = lecture.room
+                ? Array.isArray(lecture.room)
+                  ? lecture.room.join("/")
+                  : lecture.room
+                : "";
+
+              return `
                 <div class="schedule-item">
-                  <p class="lecture-name">${lecture.lecture}</p>
+                  <p class="lecture-name">${lecture.subject_name}</p>
                   <p class="lecture-details">${formatTime(
-                    lecture.start_time
-                  )} - ${formatTime(lecture.end_time)}</p>
-                  <p class="lecture-details">Room: ${lecture.room}</p>
+                    start
+                  )} - ${formatTime(end)}</p>
+                  <p class="lecture-details">Faculty: ${faculty}</p>
+                  ${room ? `<p class="lecture-details">Room: ${room}</p>` : ""}
+                  <p class="lecture-details">Type: ${lecture.type}</p>
                 </div>
-              `
-            )
+              `;
+            })
             .join("");
         } else {
           container.innerHTML = '<p class="no-classes">No classes today</p>';
