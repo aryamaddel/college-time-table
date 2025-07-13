@@ -1,0 +1,194 @@
+{
+  "Monday": [
+    {
+      "time": "08:30-09:30",
+      "subject_code": "WT",
+      "subject_name": "Web Technology",
+      "faculty": "RC",
+      "room": "305",
+      "type": "Lecture"
+    },
+    {
+      "time": "09:30-10:30",
+      "subject_code": "DIP",
+      "subject_name": "Digital Image Processing",
+      "faculty": "SJ",
+      "room": "310",
+      "type": "Lecture"
+    },
+    {
+      "time": "10:40-12:40",
+      "subject_code": "DIP",
+      "subject_name": "Digital Image Processing",
+      "faculty": "SJ",
+      "room": "PrL Lab",
+      "type": "Lab"
+    },
+    {
+      "time": "13:30-14:30",
+      "subject_code": "OP",
+      "subject_name": "Organizational Psychology",
+      "faculty": "AK",
+      "room": "311",
+      "type": "Lecture"
+    },
+    {
+      "time": "14:30-15:30",
+      "subject_code": "CN",
+      "subject_name": "Computer Networks",
+      "faculty": "LK",
+      "room": "311",
+      "type": "Lecture"
+    },
+    {
+      "time": "15:30-16:30",
+      "subject_code": "DAA",
+      "subject_name": "Design and Analysis of Algorithms",
+      "faculty": "SM",
+      "room": "311",
+      "type": "Lecture"
+    }
+  ],
+  "Tuesday": [
+    {
+      "time": "08:30-10:30",
+      "subject_code": "DAA",
+      "subject_name": "Design and Analysis of Algorithms",
+      "faculty": "SM",
+      "room": "302",
+      "type": "Lecture"
+    },
+    {
+      "time": "10:40-11:40",
+      "subject_code": "DAA",
+      "subject_name": "Design and Analysis of Algorithms",
+      "faculty": "SM",
+      "room": "310",
+      "type": "Lecture"
+    },
+    {
+      "time": "11:40-12:40",
+      "subject_code": "DIP",
+      "subject_name": "Digital Image Processing",
+      "faculty": "SJ",
+      "room": "310",
+      "type": "Lecture"
+    },
+    {
+      "time": "13:30-15:30",
+      "subject_code": "WT",
+      "subject_name": "Web Technology",
+      "faculty": "RC",
+      "room": "SL",
+      "type": "Lab"
+    },
+    {
+      "time": "15:30-16:30",
+      "subject_code": "OS 310",
+      "subject_name": "Operating System",
+      "faculty": "PAK",
+      "room": "310",
+      "type": "Lecture"
+    }
+  ],
+  "Wednesday": [
+    {
+      "time": "08:30-10:30",
+      "subject_code": "DIP",
+      "subject_name": "Digital Image Processing",
+      "faculty": "SJ",
+      "type": "Lab"
+    },
+    {
+      "time": "10:40-12:40",
+      "subject_code": "WT",
+      "subject_name": "Web Technology",
+      "faculty": "RC",
+      "room": "SL",
+      "type": "Lab"
+    },
+    {
+      "time": "13:30-14:30",
+      "subject_code": "CN",
+      "subject_name": "Computer Networks",
+      "faculty": "LK",
+      "room": "311",
+      "type": "Lecture"
+    },
+    {
+      "time": "14:30-15:30",
+      "subject_code": "AI",
+      "subject_name": "Artificial Intelligence",
+      "faculty": "VHK",
+      "room": "311",
+      "type": "Lecture"
+    },
+    {
+      "time": "15:30-16:30",
+      "subject_code": "TNP",
+      "subject_name": "Training & Placement",
+      "room": "311",
+      "type": "Other"
+    }
+  ],
+  "Thursday": [
+    {
+      "time": "08:30-09:30",
+      "subject_code": "OP Tut",
+      "subject_name": "Organizational Psychology",
+      "faculty": "AK",
+      "room": "311",
+      "type": "Tutorial"
+    },
+    {
+      "time": "09:30-10:30",
+      "subject_code": "WT",
+      "subject_name": "Web Technology",
+      "faculty": "RC",
+      "room": "311",
+      "type": "Lecture"
+    },
+    {
+      "time": "10:40-12:40",
+      "subject_code": "WT",
+      "subject_name": "Web Technology",
+      "faculty": "RC",
+      "room": "SL",
+      "type": "Lab"
+    },
+    {
+      "time": "13:30-14:30",
+      "subject_code": "AI",
+      "subject_name": "Artificial Intelligence",
+      "faculty": "VHK",
+      "room": "311",
+      "type": "Lecture"
+    },
+    {
+      "time": "14:30-16:30",
+      "subject_code": "OS",
+      "subject_name": "Operating System",
+      "faculty": "WR",
+      "room": "NL1",
+      "type": "Lab"
+    }
+  ],
+  "Friday": [
+    {
+      "time": "08:30-10:30",
+      "subject_code": "CN",
+      "subject_name": "Computer Networks",
+      "faculty": "LK",
+      "room": "301",
+      "type": "Lab"
+    },
+    {
+      "time": "10:40-11:40",
+      "subject_code": "OS",
+      "subject_name": "Operating System",
+      "faculty": "PAK",
+      "room": "311",
+      "type": "Lecture"
+    }
+  ]
+}
