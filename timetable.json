@@ -84,7 +84,7 @@
     },
     {
       "time": "15:30-16:30",
-      "subject_code": "OS 310",
+      "subject_code": "OS",
       "subject_name": "Operating System",
       "faculty": "PAK",
       "room": "310",
@@ -97,6 +97,7 @@
       "subject_code": "DIP",
       "subject_name": "Digital Image Processing",
       "faculty": "SJ",
+      "room": "PrL Lab",
       "type": "Lab"
     },
     {
