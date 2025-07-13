@@ -375,40 +375,6 @@
       const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
       let currentDay = "";
       let isLoading = true;
-      
-      // Cache DOM elements
-      const elements = {
-        clock: null,
-        currentLecture: null,
-        scheduleContent: null,
-        scheduleTitle: null,
-        themeToggle: null
-      };
-
-      // Helper functions to eliminate redundancy
-      function formatFaculty(faculty) {
-        if (!faculty) return "";
-        return Array.isArray(faculty) ? faculty.join(", ") : faculty;
-      }
-
-      function formatRoom(room) {
-        if (!room) return "";
-        return Array.isArray(room) ? room.join("/") : room;
-      }
-
-      function createLectureHTML(lecture) {
-        const { start, end } = parseTime(lecture.time);
-        const faculty = formatFaculty(lecture.faculty);
-        const room = formatRoom(lecture.room);
-
-        return `
-          <p class="lecture-name">${lecture.subject_name}</p>
-          <p class="lecture-details">${formatTime(start)} - ${formatTime(end)}</p>
-          <p class="lecture-details">Faculty: ${faculty}</p>
-          ${room ? `<p class="lecture-details">Room: ${room}</p>` : ""}
-          <p class="lecture-details">Type: ${lecture.type}</p>
-        `;
-      }
 
       async function loadTimetable() {
         try {
@@ -443,6 +409,22 @@
         }`;
       }
 
+      function createLectureHTML(lecture) {
+        const { start, end } = parseTime(lecture.time);
+        const faculty = lecture.faculty || "";
+        const room = lecture.room || "";
+
+        return `
+          <p class="lecture-name">${lecture.subject_name}</p>
+          <p class="lecture-details">${formatTime(start)} - ${formatTime(
+          end
+        )}</p>
+          <p class="lecture-details">Faculty: ${faculty}</p>
+          ${room ? `<p class="lecture-details">Room: ${room}</p>` : ""}
+          <p class="lecture-details">Type: ${lecture.type}</p>
+        `;
+      }
+
       function getCurrentLecture() {
         if (isLoading) return null;
 
@@ -461,7 +443,7 @@
       }
 
       function updateClock() {
-        elements.clock.textContent =
+        document.getElementById("clock").textContent =
           new Date().toLocaleTimeString([], {
             hour: "2-digit",
             minute: "2-digit",
@@ -470,20 +452,21 @@
       }
 
       function updateCurrentLecture() {
+        const currentLecture = document.getElementById("current-lecture");
         const lecture = getCurrentLecture();
 
         if (isLoading) {
-          elements.currentLecture.className = "current-lecture";
-          elements.currentLecture.innerHTML = "<p>Loading...</p>";
+          currentLecture.className = "current-lecture";
+          currentLecture.innerHTML = "<p>Loading...</p>";
           return;
         }
 
         if (lecture) {
-          elements.currentLecture.className = "current-lecture active";
-          elements.currentLecture.innerHTML = createLectureHTML(lecture);
+          currentLecture.className = "current-lecture active";
+          currentLecture.innerHTML = createLectureHTML(lecture);
         } else {
-          elements.currentLecture.className = "current-lecture";
-          elements.currentLecture.innerHTML = "<p>No current lecture</p>";
+          currentLecture.className = "current-lecture";
+          currentLecture.innerHTML = "<p>No current lecture</p>";
         }
       }
 
@@ -491,10 +474,7 @@
         currentDay = day;
 
         document.querySelectorAll("#day-selector button").forEach((btn) => {
-          btn.classList.remove("active");
-          if (btn.dataset.day === day) {
-            btn.classList.add("active");
-          }
+          btn.classList.toggle("active", btn.dataset.day === day);
         });
 
         displaySchedule();
@@ -502,54 +482,54 @@
 
       function displaySchedule() {
         const schedule = timetable[currentDay];
+        const scheduleTitle = document.getElementById("schedule-title");
+        const scheduleContent = document.getElementById("schedule-content");
 
-        elements.scheduleTitle.textContent = `${currentDay}'s Schedule`;
+        scheduleTitle.textContent = `${currentDay}'s Schedule`;
 
         if (isLoading) {
-          elements.scheduleContent.innerHTML = '<p class="no-classes">Loading...</p>';
+          scheduleContent.innerHTML = '<p class="no-classes">Loading...</p>';
           return;
         }
 
         if (schedule?.length) {
-          elements.scheduleContent.innerHTML = schedule
-            .map((lecture) => `
+          scheduleContent.innerHTML = schedule
+            .map(
+              (lecture) => `
               <div class="schedule-item">
                 ${createLectureHTML(lecture)}
               </div>
-            `)
+            `
+            )
             .join("");
         } else {
-          elements.scheduleContent.innerHTML = '<p class="no-classes">No classes today</p>';
+          scheduleContent.innerHTML =
+            '<p class="no-classes">No classes today</p>';
         }
       }
 
       function toggleTheme() {
         document.body.classList.toggle("dark");
         const isDark = document.body.classList.contains("dark");
-        elements.themeToggle.textContent = isDark ? "☀️" : "🌙";
+        document.getElementById("theme-toggle").textContent = isDark
+          ? "☀️"
+          : "🌙";
       }
 
       document.addEventListener("DOMContentLoaded", async () => {
-        // Cache DOM elements
-        elements.clock = document.getElementById("clock");
-        elements.currentLecture = document.getElementById("current-lecture");
-        elements.scheduleContent = document.getElementById("schedule-content");
-        elements.scheduleTitle = document.getElementById("schedule-title");
-        elements.themeToggle = document.getElementById("theme-toggle");
-
         document.querySelectorAll("#day-selector button").forEach((btn) => {
           btn.addEventListener("click", () => selectDay(btn.dataset.day));
         });
 
-        elements.themeToggle.addEventListener("click", toggleTheme);
+        document
+          .getElementById("theme-toggle")
+          .addEventListener("click", toggleTheme);
 
-        // Load timetable data first
         await loadTimetable();
-
         selectDay(getCurrentDay());
-
         updateClock();
         updateCurrentLecture();
+
         setInterval(() => {
           updateClock();
           updateCurrentLecture();
