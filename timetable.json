@@ -102,10 +102,10 @@
     },
     {
       "time": "10:40-12:40",
-      "subject_code": "WT",
-      "subject_name": "Web Technology",
-      "faculty": "RC",
-      "room": "SL",
+      "subject_code": "AI",
+      "subject_name": "Artificial Intelligence",
+      "faculty": "VHK",
+      "room": "IOT Lab",
       "type": "Lab"
     },
     {
