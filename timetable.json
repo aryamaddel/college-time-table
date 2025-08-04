@@ -26,9 +26,9 @@
     },
     {
       "time": "13:30-14:30",
-      "subject_code": "OP",
-      "subject_name": "Organizational Psychology",
-      "faculty": "AK",
+      "subject_code": "DAA",
+      "subject_name": "Design and Analysis of Algorithms",
+      "faculty": "SPP",
       "room": "311",
       "type": "Lecture"
     },
@@ -42,9 +42,9 @@
     },
     {
       "time": "15:30-16:30",
-      "subject_code": "DAA",
-      "subject_name": "Design and Analysis of Algorithms",
-      "faculty": "SM",
+      "subject_code": "OP",
+      "subject_name": "Organizational Psychology",
+      "faculty": "AK",
       "room": "311",
       "type": "Lecture"
     }
