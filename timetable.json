@@ -176,15 +176,16 @@
   ],
   "Friday": [
     {
-      "time": "08:30-10:30",
+      "time": "09:30-11:40",
       "subject_code": "CN",
       "subject_name": "Computer Networks",
       "faculty": "LK",
       "room": "301",
-      "type": "Lab"
+      "type": "Lab",
+      "batch": "A2"
     },
     {
-      "time": "10:40-11:40",
+      "time": "11:40-12:40",
       "subject_code": "OS",
       "subject_name": "Operating System",
       "faculty": "PAK",
